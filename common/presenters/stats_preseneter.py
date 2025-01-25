@@ -7,5 +7,4 @@ from common.domain.dto import Schema
 class PlayerStatisticsPresenter(ABC):
 
     @abstractmethod
-    def present(self, input_data: Type[Schema]) -> Type[Schema]:
-        ...
+    def present(self, input_data: Type[Schema]) -> Type[Schema]: ...

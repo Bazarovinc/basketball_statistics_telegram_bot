@@ -3,7 +3,7 @@ name = "baskteball-statistics-telegram-bot"
 version = "0.1.0"
 description = "Telegram bot for parsing amateuer basketball leags (MLBL, ABL, BCL) and use it for analyzies"
 authors = ["Nikita Veselenko <nikvesel@mail.ru>"]
-readme = "README.md"
+#readme = "README.md"
 packages = []
 
 [tool.black]
@@ -27,6 +27,17 @@ python-telegram-bot = "^21.7"
 sqlalchemy = "^2.0.36"
 alembic = "^1.14.0"
 aiosqlite = "^0.20.0"
+aenum = "^3.1.15"
+pandas = "^2.2.3"
+chart-studio = "^1.1.0"
+kaleido = "0.2.1"
+dependency-injector = "^4.44.0"
+loguru = "^0.7.3"
+beautifulsoup4 = "^4.12.3"
+lxml = "^5.3.0"
+fastapi = "^0.115.7"
+uvicorn = "^0.34.0"
+seaborn = "^0.13.2"
 
 
 [tool.poetry.group.dev.dependencies]

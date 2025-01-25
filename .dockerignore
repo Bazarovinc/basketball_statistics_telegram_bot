@@ -1,0 +1,7 @@
+.git
+.venv
+test_main.py
+.gitignore
+project_docs
+.flake8
+.idea
