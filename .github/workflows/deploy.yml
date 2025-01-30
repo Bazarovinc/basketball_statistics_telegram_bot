@@ -1,0 +1,66 @@
+name: Deploy Telegram Bot
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract version from pyproject.toml
+        id: version
+        run: |
+          VERSION=$(grep 'version =' pyproject.toml | awk -F\" '{print $2}')
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Login to Yandex Container Registry
+        uses: yc-actions/yc-cr-login@v2
+        with:
+          registry: cr.yandex
+          username: oauth
+          password: ${{ secrets.YC_IAM_TOKEN }}
+
+      - name: Build and push Docker image
+        env:
+          CR_REGISTRY: ${{ secrets.YC_REGISTRY_ID }}
+          CR_REPOSITORY: basketball-statistics-telegram-bot
+          IMAGE_TAG: ${{ steps.version.outputs.version }}
+        run: |
+            docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG .
+            docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
+
+#      - name: Delete old image (version-2)
+#        env:
+#          VERSION: ${{ steps.version.outputs.version }}
+#          REGISTRY_ID: ${{ secrets.YC_REGISTRY_ID }}
+#          YC_IAM_TOKEN: ${{ secrets.YC_IAM_TOKEN }}
+#        run: |
+#          # Convert version to array (e.g., 1.2.3 → [1, 2, 3])
+#          IFS='.' read -ra V <<< "$VERSION"
+#          OLD_PATCH=$((V[2] - 2))
+#          OLD_VERSION="${V[0]}.${V[1]}.$OLD_PATCH"
+#
+#          # Check if image exists and delete
+#          if curl -s -H "Authorization: Bearer $YC_IAM_TOKEN" \
+#            "https://container-registry.api.cloud.yandex.net/container-registry/v1/images?repositoryName=bot&folderId=$REGISTRY_ID" | grep -q "$OLD_VERSION"; then
+#            echo "Deleting version: $OLD_VERSION"
+#            yc container image delete --id cr.yandex/$REGISTRY_ID/bot:$OLD_VERSION
+#          else
+#            echo "Old version $OLD_VERSION not found, skipping deletion."
+#          fi
+#
+#      - name: Deploy new revision to Yandex Serverless Container
+#        env:
+#          VERSION: ${{ steps.version.outputs.version }}
+#          YC_CONTAINER_ID: ${{ secrets.YC_CONTAINER_ID }}
+#          YC_REGISTRY_ID: ${{ secrets.YC_REGISTRY_ID }}
+#        run: |
+#          yc serverless container revision deploy \
+#            --container-id $YC_CONTAINER_ID \
+#            --image "cr.yandex/$YC_REGISTRY_ID/bot:$VERSION" \
+#            --service-account-id <SERVICE_ACCOUNT_ID>  # Укажите ID сервисного аккаунта

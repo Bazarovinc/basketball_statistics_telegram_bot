@@ -1,19 +1,5 @@
 FROM python:3.10-slim
 
-
-#RUN apt-get update && apt-get install -y \
-#    libexpat1 \
-#    libgomp1 \
-#    libx11-6 \
-#    libxext6 \
-#    libxrender1 \
-#    libglib2.0-0 \
-#    libgl1-mesa-glx \
-#    libxi6 \
-#    libdbus-1-3 \
-#    --no-install-recommends \
-#    && rm -rf /var/lib/apt/lists/*
-
 # Set the working directory
 WORKDIR /code
 

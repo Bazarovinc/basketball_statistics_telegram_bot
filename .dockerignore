@@ -5,3 +5,4 @@ test_main.py
 project_docs
 .flake8
 .idea
+.github
