@@ -51,13 +51,21 @@ jobs:
 #            echo "Old version $OLD_VERSION not found, skipping deletion."
 #          fi
 #
-#      - name: Deploy new revision to Yandex Serverless Container
-#        env:
-#          VERSION: ${{ steps.version.outputs.version }}
-#          YC_CONTAINER_ID: ${{ secrets.YC_CONTAINER_ID }}
-#          YC_REGISTRY_ID: ${{ secrets.YC_REGISTRY_ID }}
-#        run: |
-#          yc serverless container revision deploy \
-#            --container-id $YC_CONTAINER_ID \
-#            --image "cr.yandex/$YC_REGISTRY_ID/bot:$VERSION" \
-#            --service-account-id <SERVICE_ACCOUNT_ID>  # Укажите ID сервисного аккаунта
+      - name: Deploy Serverless Container
+        id: deploy-sls-container
+        uses: yc-actions/yc-sls-container-deploy@v2
+        env:
+          CR_REGISTRY: ${{ secrets.YC_REGISTRY_ID }}
+          CR_REPOSITORY: basketball-statistics-telegram-bot
+          IMAGE_TAG: ${{ steps.version.outputs.version }}
+        with:
+          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
+          container-name: basketball-statistics-telegram-bot
+          folder-id:  ${{ secrets.YC_SLS_FOLDER_ID }}
+          revision-service-account-id: ${{ secrets.YC_SERVICE_ACCOUNT_ID }}
+          revision-cores: 1
+          revision-memory: 768Mb
+          revision-core-fraction: 5
+          revision-concurrency: 1
+          revision-image-url: cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
+          revision-execution-timeout: 180
