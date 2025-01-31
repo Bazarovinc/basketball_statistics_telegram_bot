@@ -58,6 +58,7 @@ jobs:
           CR_REGISTRY: ${{ secrets.YC_REGISTRY_ID }}
           CR_REPOSITORY: basketball-statistics-telegram-bot
           IMAGE_TAG: ${{ steps.version.outputs.version }}
+          ACTIONS_STEP_DEBUG: true
         with:
           yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
           container-name: basketball-statistics-telegram-bot
