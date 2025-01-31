@@ -19,7 +19,7 @@ jobs:
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
 
       - name: Login to Yandex Container Registry
-        uses: yc-actions/yc-cr-login@v2
+        uses: yc-actions/yc-cr-login@v1
         with:
 #          yc-oauth-token: ${{ secrets.YC_OAUTH_TOKEN }}
 #          yc-sa-key: ${{ secrets.YC_SERVICE_ACCOUNT_KEY }}
