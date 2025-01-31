@@ -66,7 +66,7 @@ jobs:
           revision-service-account-id: ${{ secrets.YC_SERVICE_ACCOUNT_ID }}
           revision-env: WEBHOOK=${{ secrets.TG_BOT_WEBHOOK }}
           revision-secrets: |
-            token=${{ secrets.YC_LOCKBOX_SECRET_ID }}/${{ secrets.YC_LOCKBOX_SECRET_VERSION_ID }}/${{ secrets.YC_LOCKBOX_SECRET_KEY }}
+            token=e6qtfbh5u3l6roclcf5m/e6qu646qo966eb62ohav/PROD_BOT_TOKEN
           revision-cores: 1
           revision-memory: 768Mb
           revision-core-fraction: 5
