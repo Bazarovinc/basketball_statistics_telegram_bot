@@ -65,10 +65,12 @@ jobs:
           folder-id:  ${{ secrets.YC_SLS_FOLDER_ID }}
           revision-service-account-id: ${{ secrets.YC_SERVICE_ACCOUNT_ID }}
           revision-env: WEBHOOK=${{ secrets.TG_BOT_WEBHOOK }}
-#          revision-secrets: <token>=<${{ secrets.YC_LOCKBOX_SECRET_ID }}>/<${{ secrets.YC_LOCKBOX_SECRET_VERSION_ID }}>/<${{ secrets.YC_LOCKBOX_SECRET_KEY }}>
+          revision-secrets: |
+            token=${{ secrets.YC_LOCKBOX_SECRET_ID }}/${{ secrets.YC_LOCKBOX_SECRET_VERSION_ID }}/${{ secrets.YC_LOCKBOX_SECRET_KEY }}
           revision-cores: 1
           revision-memory: 768Mb
           revision-core-fraction: 5
           revision-concurrency: 1
-          revision-image-url: cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
+          revision-image-url: |
+            cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
           revision-execution-timeout: 180
