@@ -21,11 +21,11 @@ jobs:
       - name: Login to Yandex Container Registry
         uses: yc-actions/yc-cr-login@v2
         with:
-          yc-oauth-token: ${{ secrets.YC_OAUTH_TOKEN }}
-          yc-sa-key: ${{ secrets.YC_SERVICE_ACCOUNT_KEY }}
+#          yc-oauth-token: ${{ secrets.YC_OAUTH_TOKEN }}
+#          yc-sa-key: ${{ secrets.YC_SERVICE_ACCOUNT_KEY }}
           registry: cr.yandex
           username: oauth
-          password: ${{ secrets.YC_IAM_TOKEN }}
+          password: ${{ secrets.YC_OAUTH_TOKEN }}
 
       - name: Build and push Docker image
         env:
