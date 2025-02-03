@@ -63,10 +63,10 @@ jobs:
           yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
           container-name: basketball-statistics-telegram-bot
           folder-id:  ${{ secrets.YC_SLS_FOLDER_ID }}
-          revision-service-account-id: ajenm8p44n1ng4eo1cvh
+          revision-service-account-id: ${{ secrets.YC_SERVICE_ACCOUNT_ID }}
           revision-env: WEBHOOK=${{ secrets.TG_BOT_WEBHOOK }}
           revision-secrets: |
-            token=e6qtfbh5u3l6roclcf5m/e6qu646qo966eb62ohav/PROD_BOT_TOKEN
+            token=${{ secrets.YC_LOCKBOX_SECRET_ID }}/${{ secrets.YC_LOCKBOX_SECRET_VERSION_ID }}/${{ secrets.YC_LOCKBOX_SECRET_KEY }}
           revision-cores: 1
           revision-memory: 768Mb
           revision-core-fraction: 5
