@@ -22,13 +22,13 @@ jobs:
           VERSION=$(grep 'version =' pyproject.toml | awk -F\" '{print $2}')
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
 
-      - name: Configure OIDC
-        id: oidc
-        uses: yc-actions/auth@v1
-        with:
-          federation-id: ${{ secrets.YC_FEDERATION_ID }}
-          cloud-id: ${{ secrets.YC_CLOUD_ID }}
-          service-account-id: ${{ secrets.YC_SERVICE_ACCOUNT_ID }}
+#      - name: Configure OIDC
+#        id: oidc
+#        uses: yc-actions/auth@v1
+#        with:
+#          federation-id: ${{ secrets.YC_FEDERATION_ID }}
+#          cloud-id: ${{ secrets.YC_CLOUD_ID }}
+#          service-account-id: ${{ secrets.YC_SERVICE_ACCOUNT_ID }}
 
       - name: Login to Yandex Container Registry
         uses: yc-actions/yc-cr-login@v2
