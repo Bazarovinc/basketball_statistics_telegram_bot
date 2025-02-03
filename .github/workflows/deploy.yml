@@ -30,20 +30,20 @@ jobs:
 #          cloud-id: ${{ secrets.YC_CLOUD_ID }}
 #          service-account-id: ${{ secrets.YC_SERVICE_ACCOUNT_ID }}
 
-      - name: Login to Yandex Container Registry
-        uses: yc-actions/yc-cr-login@v2
-        with:
-            oidc-provider: github  # Используем встроенную OID-аутентификацию
-            federation-id: ${{ secrets.YC_FEDERATION_ID }}
-            cloud-id: ${{ secrets.YC_CLOUD_ID }}
-            service-account-id: ${{ secrets.YC_SERVICE_ACCOUNT_ID }}
-            registry-id: ${{ secrets.YC_REGISTRY_ID }}
-
-
 #      - name: Login to Yandex Container Registry
 #        uses: yc-actions/yc-cr-login@v2
 #        with:
-#          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
+#            oidc-provider: github  # Используем встроенную OID-аутентификацию
+#            federation-id: ${{ secrets.YC_FEDERATION_ID }}
+#            cloud-id: ${{ secrets.YC_CLOUD_ID }}
+#            service-account-id: ${{ secrets.YC_SERVICE_ACCOUNT_ID }}
+#            registry-id: ${{ secrets.YC_REGISTRY_ID }}
+
+
+      - name: Login to Yandex Container Registry
+        uses: yc-actions/yc-cr-login@v2
+        with:
+          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
       - name: Build and push Docker image
         env:
           CR_REGISTRY: ${{ secrets.YC_REGISTRY_ID }}
