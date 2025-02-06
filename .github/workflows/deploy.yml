@@ -33,10 +33,11 @@ jobs:
       # Запросить значение секрета через API, используя IAM-токен в Yandex Cloud
       - name: GetLockboxPayload
         run: |
-          SECRET_ID="e6qmama9h88knjvgsmcc"
-          EOF=$(curl -sH "Authorization: Bearer ${{steps.IAMtoken.outputs.IAMTOKEN}}" https://payload.lockbox.api.cloud.yandex.net/lockbox/v1/secrets/$SECRET_ID/payload)
-          echo "text<<$EOF" >> $GITHUB_OUTPUT
-          echo "$message" >> $GITHUB_OUTPUT
-          echo "$EOF" >> $GITHUB_OUTPUT
-#          echo 'result<<$SECRET_DATA' >> $GITHUB_OUTPUT
+          SECRET_ID="e6qmama9h88knjvgsmcc"  # ID секрета
+          PAYLOAD=$(curl -s -H "Authorization: Bearer ${{ env.IAM_TOKEN }}" \
+            "https://payload.lockbox.api.cloud.yandex.net/lockbox/v1/secrets/$SECRET_ID/payload")
+          
+          # Пример извлечения значения секрета
+          SECRET_VALUE=$(echo "$PAYLOAD" | jq -r '.entries[] | select(.key == "my-key") | .textValue')
+          echo "SECRET_VALUE=$SECRET_VALUE" >> $GITHUB_ENV
         id: getlockboxpayload
