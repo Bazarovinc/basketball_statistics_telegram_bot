@@ -4,52 +4,36 @@ on:
   push:
     branches: [master]
 
-# Обязательные разрешения для OIDC
 permissions:
-  id-token: write
-  contents: read
+  id-token: write  # Необходимо для OIDC
+  contents: read    # Для actions/checkout
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      # Получение OIDC-токена через встроенный метод
-      - name: Get OIDC Token
-        id: oidc
+      - name: Install OIDC Client from Core Package
+        run: npm install @actions/core @actions/http-client
+      # Получить токен задания рабочего процесса
+      - name: Get Id Token
         uses: actions/github-script@v7
+        id: tokenid
         with:
           script: |
             const coredemo = require('@actions/core')
-            const id_token = await core.getIDToken()
+            let id_token = await coredemo.getIDToken()
             coredemo.setOutput('id_token', id_token)
-
-      # Обмен OIDC-токена на IAM-токен Yandex Cloud
-      - name: Get IAM Token
-        id: iam-token
+      # Обменять токен задания рабочего процесса на IAM-токен сервисного аккаунта в Yandex Cloud
+      - name: GetIAMToken
         run: |
-          SA_ID="aje1d68b9edtrrd8rnjo"  # ID сервисного аккаунта
-          RESPONSE=$(curl -s -X POST \
-            -H "Content-Type: application/x-www-form-urlencoded" \
-            -d "grant_type=urn:ietf:params:oauth:grant-type:token-exchange" \
-            -d "requested_token_type=urn:ietf:params:oauth:token-type:access_token" \
-            -d "audience=$SA_ID" \
-            -d "subject_token=${{ steps.oidc.outputs.id_token }}" \
-            -d "subject_token_type=urn:ietf:params:oauth:token-type:id_token" \
-            "https://auth.yandex.cloud/oauth/token")
-
-          IAM_TOKEN=$(echo "$RESPONSE" | jq -r '.access_token')
-          echo "IAM_TOKEN=$IAM_TOKEN" >> $GITHUB_ENV
-
-      # Получение секрета из Lockbox
-      - name: Get Lockbox Secret
+          SA_ID="aje1d68b9edtrrd8rnjo"
+          IAMTOKEN=$(curl -sH "Content-Type: application/x-www-form-urlencoded" -d "grant_type=urn:ietf:params:oauth:grant-type:token-exchange&requested_token_type=urn:ietf:params:oauth:token-type:access_token&audience=$SA_ID&subject_token=${{steps.tokenid.outputs.id_token}}&subject_token_type=urn:ietf:params:oauth:token-type:id_token" -X POST https://auth.yandex.cloud/oauth/token | jq -r '.access_token')
+          echo "IAMToken=${IAMTOKEN}" >> $GITHUB_OUTPUT
+        id: IAMtoken
+      # Запросить значение секрета через API, используя IAM-токен в Yandex Cloud
+      - name: GetLockboxPayload
         run: |
-          SECRET_ID="e6qmama9h88knjvgsmcc"  # ID секрета
-          PAYLOAD=$(curl -s -H "Authorization: Bearer ${{ env.IAM_TOKEN }}" \
-            "https://payload.lockbox.api.cloud.yandex.net/lockbox/v1/secrets/$SECRET_ID/payload")
-          
-          # Пример извлечения значения секрета
-          SECRET_VALUE=$(echo "$PAYLOAD" | jq -r '.entries[] | select(.key == "my-key") | .textValue')
-          echo "SECRET_VALUE=$SECRET_VALUE" >> $GITHUB_ENV
+          SECRET_ID="e6qmama9h88knjvgsmcc"
+          SECRET_DATA=$(curl -sH "Authorization: Bearer ${{steps.IAMtoken.outputs.IAMTOKEN}}" https://payload.lockbox.api.cloud.yandex.net/lockbox/v1/secrets/$SECRET_ID/payload)
+#          echo "SECRET_DATA=${SECRET_DATA}" >> $GITHUB_OUTPUT
+        id: getlockboxpayload
