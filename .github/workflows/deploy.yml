@@ -90,7 +90,7 @@ jobs:
             WEBHOOK=${{ secrets.TG_BOT_WEBHOOK }}
 #            TOKEN=${{ secrets.TG_BOT_TOKEN }}
           revision-secrets: |
-            token=e6q6fklib0uf5pv253n2/e6qujjav52p4jrvj0ujv/DEV_TG_TOKEN
+            token=${{ secrets.YC_LOCKBOX_SECRET_ID }}/${{ secrets.YC_LOCKBOX_SECRET_VERSION_ID }}/${{ secrets.YC_LOCKBOX_SECRET_KEY }}
           revision-cores: 1
           revision-memory: 768Mb
           revision-core-fraction: 5
