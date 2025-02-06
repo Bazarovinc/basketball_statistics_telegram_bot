@@ -1,5 +1,8 @@
+import uuid
+
 from dependency_injector.wiring import Provide, inject
 from loguru import logger
+from src.constants import FAST_STATISTICS_LEAGUE_BUTTON_TEMPLATE
 from telegram import InlineKeyboardMarkup, Update
 from telegram.ext import ContextTypes
 
@@ -23,5 +26,6 @@ async def get_fast_statistic_callback(
         chat_id=update.effective_message.chat_id,
         text=league_info.fast_statistic_tutorial.tutorial_text,
         reply_markup=InlineKeyboardMarkup(generate_cancel_button()),
+        message_effect_id=f'{uuid.uuid4()}_{FAST_STATISTICS_LEAGUE_BUTTON_TEMPLATE}{league_info.id}'
     )
     return LEAGUE_LINKS_ROUTES

@@ -29,6 +29,8 @@ async def get_fast_statistics_result(
     user_id = update.effective_user.id
     if not update.message.reply_to_message:
         await context.bot.send_message(update.effective_message.chat_id, text=NOT_REPLY_MESSAGE)
+    logger.info(update.message.message_id)
+    logger.info(update.message.effect_id)
     user_message = update.message.text
     logger.info(f"Сообщение-ссылка для fast_statistics от пользователя " f"{user_id}")
     logger.debug(f"Ссылка: {user_message}")
