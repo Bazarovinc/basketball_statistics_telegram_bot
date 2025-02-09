@@ -1,10 +1,11 @@
 from pydantic import AnyHttpUrl, model_validator
 
 from common.domain.dto.league_reader_input import LeagueReaderInputSchema, LeagueTypeEnum
-from src.constants import MLBL_PLAYER_PATH_PARAM, MLBL_TEAM_PATH_PARAM
+from src.constants import MLBL_HOST, MLBL_PLAYER_PATH_PARAM, MLBL_TEAM_PATH_PARAM
 
 
 class MLBLInputBaseSchema(LeagueReaderInputSchema):
+    _host: str = MLBL_HOST
     league_type: LeagueTypeEnum = LeagueTypeEnum.MLBL
     player_comp_id: int | str
     team_comp_id: int | str | None = None

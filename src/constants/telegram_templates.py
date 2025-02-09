@@ -105,6 +105,7 @@ WAITING_MESSAGE: Final[str] = "Ожидайте...⏳"
 NOT_REPLY_MESSAGE: Final[str] = (
     "К сожалению, ты прислал ссылку не ответом на инструкцию, попробуй снова..."
 )
+BAD_MESSAGE_REPLY_MESSAGE: Final[str] = "К сожалению, ответил реплаем не на то сообщение"
 CANCEL_BUTTON: Final[str] = "🔙Отмена"
 CANCEL_BUTTON_CALLBACK: Final[str] = "back"
 FAST_STATISTICS_RESULT_MESSAGE: Final[str] = "Статистика игрока {username} в лиге {league}"

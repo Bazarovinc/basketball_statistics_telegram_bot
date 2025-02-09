@@ -69,6 +69,7 @@ from .leagues_addresses import (
 from .logs_templates import USER_COMMAND_CALL
 from .telegram_templates import (
     ABL_FAST_STATISTICS_TUTORIAL,
+    BAD_MESSAGE_REPLY_MESSAGE,
     BCL_FAST_STATISTICS_TUTORIAL,
     CANCEL_BUTTON,
     CANCEL_BUTTON_CALLBACK,

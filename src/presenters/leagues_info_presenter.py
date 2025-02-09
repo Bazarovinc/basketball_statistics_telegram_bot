@@ -1,5 +1,6 @@
-from functools import cached_property
+from functools import cache, cached_property
 
+from common.domain.dto.league_reader_input import LeagueTypeEnum
 from src.domain.dto.base.league import (
     FAST_STATISTICS_DEFAULT_TUTORIAL_SCREENSHOTS,
     LEAGUES,
@@ -25,3 +26,10 @@ class LeagueInfoPresenter(LeagueInfoPresenterInterface):
     @cached_property
     def default_tutorial(self) -> tuple[ScreenshotSchema, ...]:
         return FAST_STATISTICS_DEFAULT_TUTORIAL_SCREENSHOTS
+
+    @cache
+    def get_league_type_by_fast_statistics(self, text: str) -> LeagueTypeEnum | None:
+        for league_info in self.leagues.values():
+            if league_info.fast_statistic_tutorial.tutorial_text == text:
+                return league_info.league_type
+        return None

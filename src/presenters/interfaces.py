@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from functools import cached_property
 
+from common.domain.dto.league_reader_input import LeagueTypeEnum
 from common.domain.dto.statistics_presenter import StatisticPresenterSchema
 from src.domain.dto.base.league import LeagueBaseSchema, ScreenshotSchema
 
@@ -26,4 +27,8 @@ class LeagueInfoPresenterInterface(ABC):
     @cached_property
     @abstractmethod
     def default_tutorial(self) -> tuple[ScreenshotSchema, ...]:
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_league_type_by_fast_statistics(self, text: str) -> LeagueTypeEnum | None:
         raise NotImplementedError
