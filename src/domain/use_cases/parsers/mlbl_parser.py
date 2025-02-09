@@ -10,7 +10,9 @@ from src.domain.dto.leagues_data.mlbl.reader_input import MLBLInputBaseSchema
 from src.domain.use_cases.parsers.interface import LeagueParser
 
 
-class MLBLParser(LeagueParser):
+class MLBLParser(LeagueParser[MLBLInputBaseSchema]):
+    input_schema = MLBLInputBaseSchema
+
     player_profile_address: str | AnyHttpUrl = MLBL_PLAYER_PROFILE_ADDRESS
     player_stats_address: str | AnyHttpUrl = MLBL_PLAYER_STATS_ADDRESS
     # player_team_info_address: str | AnyHttpUrl = PLAYER_TEAM_INFO_ADDRESS
@@ -120,6 +122,7 @@ class MLBLParser(LeagueParser):
     async def parse_fast_statistic(
         self, data_from_user: MLBLInputBaseSchema
     ) -> MLBLUserStatsPerGameResponseSchema:
+        data_from_user = self._validate_input(data_from_user)
         logger.info("Получение данных из лиги МЛБЛ для быстрой статистики")
         self._set_player_addresses_variables(data_from_user)
         player_info, statistics = await asyncio.gather(

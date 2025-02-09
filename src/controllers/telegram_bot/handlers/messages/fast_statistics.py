@@ -8,6 +8,7 @@ from telegram.ext import ContextTypes, ConversationHandler
 
 from common.exceptions.parsers_exceptions import ServerNotAvailableException, URLValidationException
 from src.constants.telegram_templates import (
+    BAD_MESSAGE_REPLY_MESSAGE,
     BAD_URL_ERROR_MESSAGE,
     FAST_STATISTICS_RESULT_MESSAGE,
     LEAGUE_SERVER_ERROR_MESSAGE,
@@ -18,6 +19,7 @@ from src.constants.telegram_templates import (
 from src.containers.use_cases import UseCasesContainer
 from src.domain.dto.user_inputs.league_urls import LeagueUrlsUserInputSchema
 from src.domain.use_cases.core_use_cases.fast_statistics import FastStatisticsGetter
+from src.domain.use_cases.core_use_cases.leagues_service import LeaguesService
 
 
 @inject
@@ -25,6 +27,7 @@ async def get_fast_statistics_result(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE,
     use_case: FastStatisticsGetter = Provide[UseCasesContainer.fast_statistics_getter],
+    leagues_service: LeaguesService = Provide[UseCasesContainer.leagues_service],
 ) -> int:
     user_id = update.effective_user.id
     if not update.message.reply_to_message:
@@ -53,30 +56,41 @@ async def get_fast_statistics_result(
             )
         )
         return ConversationHandler.END
-    try:
-        result = await use_case(
-            LeagueUrlsUserInputSchema(
-                player_url=data_from_user, reply_message_text=update.message.reply_to_message.text
+    if league_type := leagues_service.get_league_type_by_fast_statistics(
+        update.message.reply_to_message.text
+    ):
+        try:
+            result = await use_case(
+                LeagueUrlsUserInputSchema(player_url=data_from_user, league_type=league_type)
             )
-        )
-    except URLValidationException as url_validation_error:
-        logger.error(url_validation_error)
+        except URLValidationException as url_validation_error:
+            logger.error(url_validation_error)
+            await asyncio.gather(
+                *(
+                    delete_task,
+                    context.bot.send_message(
+                        update.effective_message.chat_id, text=BAD_URL_ERROR_MESSAGE
+                    ),
+                )
+            )
+            return ConversationHandler.END
+        except ServerNotAvailableException as server_error:
+            logger.error(server_error)
+            await asyncio.gather(
+                *(
+                    delete_task,
+                    context.bot.send_message(
+                        update.effective_message.chat_id, text=LEAGUE_SERVER_ERROR_MESSAGE
+                    ),
+                )
+            )
+            return ConversationHandler.END
+    else:
         await asyncio.gather(
             *(
                 delete_task,
                 context.bot.send_message(
-                    update.effective_message.chat_id, text=BAD_URL_ERROR_MESSAGE
-                ),
-            )
-        )
-        return ConversationHandler.END
-    except ServerNotAvailableException as server_error:
-        logger.error(server_error)
-        await asyncio.gather(
-            *(
-                delete_task,
-                context.bot.send_message(
-                    update.effective_message.chat_id, text=LEAGUE_SERVER_ERROR_MESSAGE
+                    update.effective_message.chat_id, text=BAD_MESSAGE_REPLY_MESSAGE
                 ),
             )
         )

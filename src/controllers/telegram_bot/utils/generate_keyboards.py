@@ -1,7 +1,7 @@
 from typing import Sequence
 
 from loguru import logger
-from telegram import InlineKeyboardButton, Inl
+from telegram import InlineKeyboardButton
 
 from src.constants import CANCEL_BUTTON, CANCEL_BUTTON_CALLBACK
 from src.domain.dto.base.league import LeagueBaseSchema

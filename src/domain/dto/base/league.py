@@ -6,14 +6,17 @@ from common.domain.dto import BaseSchema
 from common.domain.dto.league_reader_input import LeagueTypeEnum
 from src.constants import (
     ABL_FAST_STATISTICS_TUTORIAL,
+    ABL_HOST,
     ABL_PLAYER_PROFILE_SCREENSHOT,
     BCL_FAST_STATISTICS_TUTORIAL,
+    BCL_HOST,
     FAST_STATISTICS_TUTORIAL_0_STEP,
     FAST_STATISTICS_TUTORIAL_1_STEP,
     FAST_STATISTICS_TUTORIAL_1_STEP_SCREENSHOT,
     FAST_STATISTICS_TUTORIAL_2_STEP,
     FAST_STATISTICS_TUTORIAL_2_STEP_SCREENSHOT,
     MLBL_FAST_STATISTICS_TUTORIAL,
+    MLBL_HOST,
     MLBL_PLAYER_PROFILE_SCREENSHOT,
 )
 from src.constants.directories import BCL_PLAYER_PROFILE_SCREENSHOT
@@ -31,18 +34,24 @@ class UserTutorialSchema(BaseSchema):
 
 class LeagueBaseSchema(BaseSchema):
     id: int
-    name: str
+    league_type: LeagueTypeEnum
     main_page_url: AnyHttpUrl
+    host: str
     player_profile_screenshot: str
     fast_statistic_tutorial: UserTutorialSchema
+
+    @property
+    def name(self) -> str:
+        return self.league_type.value
 
 
 ID_GENERATOR = iter(range(10))
 
 MLBL: Final[LeagueBaseSchema] = LeagueBaseSchema(
     id=next(ID_GENERATOR),
-    name=LeagueTypeEnum.MLBL.value,
+    league_type=LeagueTypeEnum.MLBL,
     main_page_url=AnyHttpUrl("https://ilovebasket.ru/"),
+    host=MLBL_HOST,
     player_profile_screenshot=MLBL_PLAYER_PROFILE_SCREENSHOT,
     fast_statistic_tutorial=UserTutorialSchema(
         tutorial_text=MLBL_FAST_STATISTICS_TUTORIAL,
@@ -64,8 +73,9 @@ MLBL: Final[LeagueBaseSchema] = LeagueBaseSchema(
 )
 ABL: Final[LeagueBaseSchema] = LeagueBaseSchema(
     id=next(ID_GENERATOR),
-    name=LeagueTypeEnum.ABL.value,
+    league_type=LeagueTypeEnum.ABL,
     main_page_url=AnyHttpUrl("https://ablforpeople.com/"),
+    host=ABL_HOST,
     player_profile_screenshot=ABL_PLAYER_PROFILE_SCREENSHOT,
     fast_statistic_tutorial=UserTutorialSchema(
         tutorial_text=ABL_FAST_STATISTICS_TUTORIAL,
@@ -87,8 +97,9 @@ ABL: Final[LeagueBaseSchema] = LeagueBaseSchema(
 )
 BCL: Final[LeagueBaseSchema] = LeagueBaseSchema(
     id=next(ID_GENERATOR),
-    name=LeagueTypeEnum.BCL.value,
+    league_type=LeagueTypeEnum.BCL,
     main_page_url=AnyHttpUrl("https://basketball.businesschampions.ru/"),
+    host=BCL_HOST,
     player_profile_screenshot=BCL_PLAYER_PROFILE_SCREENSHOT,
     fast_statistic_tutorial=UserTutorialSchema(
         tutorial_text=BCL_FAST_STATISTICS_TUTORIAL,

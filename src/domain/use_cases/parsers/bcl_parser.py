@@ -10,11 +10,14 @@ from src.domain.dto.leagues_data.bcl.reader_input import BCLInputBaseSchema
 from src.domain.use_cases.parsers.interface import LeagueParser
 
 
-class BCLParser(LeagueParser):
+class BCLParser(LeagueParser[BCLInputBaseSchema]):
+
+    input_schema = BCLInputBaseSchema
 
     async def parse_fast_statistic(
         self, data_from_user: BCLInputBaseSchema
     ) -> BCLUserStatsPerGameResponseSchema:
+        data_from_user = self._validate_input(data_from_user)
         html = await self._league_reader.get_data_html(data_from_user.player_url.unicode_string())
         if not html:
             logger.error("Данный от лиги не получены")

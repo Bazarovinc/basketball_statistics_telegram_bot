@@ -23,7 +23,8 @@ from src.domain.dto.leagues_data.abl.reader_input import ABLInputBaseSchema
 from src.domain.use_cases.parsers.interface import LeagueParser
 
 
-class ABLParser(LeagueParser):
+class ABLParser(LeagueParser[ABLInputBaseSchema]):
+    input_schema = ABLInputBaseSchema
     player_profile_address: str = ABL_PLAYER_PROFILE_ADDRESS
     played_games_address: str = ABL_PLAYED_GAMES_ADDRESS
     game_users_address: str = ABL_GAME_USERS_ADDRESS
@@ -80,6 +81,7 @@ class ABLParser(LeagueParser):
     async def parse_fast_statistic(
         self, data_from_user: ABLInputBaseSchema
     ) -> PlayerStaticsPresenterSchema:
+        data_from_user = self._validate_input(data_from_user)
         player_profile_response, games_info_response = await asyncio.gather(
             *(
                 self._league_reader.get_data_json(
