@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "baskteball-statistics-telegram-bot"
-version = "0.0.45"
+version = "0.0.46"
 description = "Telegram bot for parsing amateuer basketball leags (MLBL, ABL, BCL) and use it for analyzies"
 authors = ["Nikita Veselenko <nikvesel@mail.ru>"]
 #readme = "README.md"
