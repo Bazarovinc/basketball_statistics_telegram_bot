@@ -103,58 +103,66 @@ class MatplotlibGraphicsPresenter(MultiplyDataPresenter):
         shots_bars = ax.bar(
             x - bar_width, data["shots_1"], width=bar_width, label=SHOTS_1_NAME, color=SHOTS_1_COLOR
         )
-        ax.bar(
-            x, data["shots_2"], width=bar_width, label=SHOTS_2_NAME, color=SHOTS_2_COLOR
-        )
+        ax.bar(x, data["shots_2"], width=bar_width, label=SHOTS_2_NAME, color=SHOTS_2_COLOR)
         ax.bar(
             x + bar_width, data["shots_3"], width=bar_width, label=SHOTS_3_NAME, color=SHOTS_3_COLOR
         )
 
         # Отрисовка points_{1-3} поверх shots_{1-3}
         ax.bar(
-            x - bar_width, data["points_1"], width=bar_width, label=POINTS_1_NAME,
+            x - bar_width,
+            data["points_1"],
+            width=bar_width,
+            label=POINTS_1_NAME,
             color=POINTS_1_COLOR,
-            bottom=data["shots_1"]  # Начинаем от верха shots_1
+            bottom=data["shots_1"],  # Начинаем от верха shots_1
         )
         ax.bar(
-            x, data["points_2"], width=bar_width, label=POINTS_2_NAME, color=POINTS_2_COLOR,
-            bottom=data["shots_2"]  # Начинаем от верха shots_2
+            x,
+            data["points_2"],
+            width=bar_width,
+            label=POINTS_2_NAME,
+            color=POINTS_2_COLOR,
+            bottom=data["shots_2"],  # Начинаем от верха shots_2
         )
         ax.bar(
-            x + bar_width, data["points_3"], width=bar_width, label=POINTS_3_NAME,
+            x + bar_width,
+            data["points_3"],
+            width=bar_width,
+            label=POINTS_3_NAME,
             color=POINTS_3_COLOR,
-            bottom=data["shots_3"]  # Начинаем от верха shots_3
+            bottom=data["shots_3"],  # Начинаем от верха shots_3
         )
 
         # Настройка осей и легенды
         ax.set_xticks(x)
-        ax.set_xticklabels(data["game_info"], rotation=45, ha='right')  # Поворот подписей
+        ax.set_xticklabels(data["game_info"], rotation=45, ha="right")  # Поворот подписей
         ax.legend()
 
         # Добавление аннотаций для shots_{1-3}
         for bar in shots_bars:
             height = bar.get_height()
             ax.text(
-                bar.get_x() + bar.get_width() / 2, height, f'{height}',
-                ha='center', va='bottom', fontsize=8
+                bar.get_x() + bar.get_width() / 2,
+                height,
+                f"{height}",
+                ha="center",
+                va="bottom",
+                fontsize=8,
             )
 
         # Добавление аннотаций для points_{1-3}
         for i, (points, shots) in enumerate(zip(data["points_1"], data["shots_1"])):
             ax.text(
-                x[i] - bar_width, shots + points, f'{points}',
-                ha='center', va='bottom', fontsize=8
+                x[i] - bar_width, shots + points, f"{points}", ha="center", va="bottom", fontsize=8
             )
         for i, (points, shots) in enumerate(zip(data["points_2"], data["shots_2"])):
-            ax.text(
-                x[i], shots + points, f'{points}',
-                ha='center', va='bottom', fontsize=8
-            )
+            ax.text(x[i], shots + points, f"{points}", ha="center", va="bottom", fontsize=8)
         for i, (points, shots) in enumerate(zip(data["points_3"], data["shots_3"])):
             ax.text(
-                x[i] + bar_width, shots + points, f'{points}',
-                ha='center', va='bottom', fontsize=8
+                x[i] + bar_width, shots + points, f"{points}", ha="center", va="bottom", fontsize=8
             )
+
     def _get_total_score_bars(self, ax: Axes, data: DataFrame) -> None:
         bars = ax.bar(data["game_info"], data["total_points"], color=TOTAL_SCORE_COLOR)
         self._add_labels(ax, bars, np.arange(len(data)))
