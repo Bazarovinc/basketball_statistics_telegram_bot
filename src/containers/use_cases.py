@@ -1,5 +1,6 @@
 from dependency_injector import containers, providers
 
+from common.domain.dto.league_reader_input import LeagueTypeEnum
 from src.containers.getaways import GetawaysContainer
 from src.containers.presenters import PresentersContainer
 from src.domain.use_cases.core_use_cases.fast_statistics import FastStatisticsGetter
@@ -17,11 +18,21 @@ class UseCasesContainer(containers.DeclarativeContainer):
     leagues_service = providers.Singleton(
         LeaguesService, leagues_info_presenter=presenters.leagues_info_presenter
     )
-    mlbl_parser = providers.Factory(MLBLParser, league_reader=getaways.league_reader)
-    bcl_parser = providers.Factory(BCLParser, league_reader=getaways.league_reader)
-    abl_parser = providers.Factory(ABLParser, league_reader=getaways.league_reader)
     parser_factory = providers.Factory(
-        ParserFactory, mlbl_parser=mlbl_parser, bcl_parser=bcl_parser, abl_parser=abl_parser
+        ParserFactory,
+        parsers=providers.Dict(
+            {
+                LeagueTypeEnum.ABL: providers.Factory(
+                    ABLParser, league_reader=getaways.league_reader
+                ),
+                LeagueTypeEnum.BCL: providers.Factory(
+                    BCLParser, league_reader=getaways.league_reader
+                ),
+                LeagueTypeEnum.MLBL: providers.Factory(
+                    MLBLParser, league_reader=getaways.league_reader
+                ),
+            }
+        ),
     )
     fast_statistics_getter = providers.Factory(
         FastStatisticsGetter, parser_factory=parser_factory, presenter=presenters.graphics_presenter
