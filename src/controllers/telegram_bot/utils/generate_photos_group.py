@@ -4,7 +4,7 @@ from src.domain.dto.base.league import ScreenshotSchema
 
 
 def generate_tutorial_photos_group(
-    images: tuple[ScreenshotSchema, ...]
+    images: tuple[ScreenshotSchema, ...],
 ) -> tuple[InputMediaPhoto, ...]:
     return tuple(
         (
