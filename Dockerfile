@@ -10,7 +10,7 @@ RUN pip install uv
 COPY pyproject.toml ./
 
 # Install dependencies
-RUN uv pip install -r pyproject.toml
+RUN uv pip install -r pyproject.toml --system
 
 
 COPY ./main.py /code
