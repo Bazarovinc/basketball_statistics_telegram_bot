@@ -1,17 +1,16 @@
-FROM python:3.10-slim
+FROM python:3.11-slim
 
 # Set the working directory
 WORKDIR /code
 
 # Install poetry
-RUN pip install poetry==1.3.1
+RUN pip install uv
 
 # Copy only the pyproject.toml and poetry.lock files to install dependencies first
-COPY pyproject.toml poetry.lock ./
+COPY pyproject.toml ./
 
 # Install dependencies
-RUN poetry export -f requirements.txt --output requirements.txt --without-hashes --with-credentials --without-urls
-RUN pip install --no-cache-dir -r requirements.txt
+RUN uv pip install -r pyproject.toml --system
 
 
 COPY ./main.py /code

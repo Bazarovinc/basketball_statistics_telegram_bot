@@ -199,7 +199,7 @@ class MatplotlibGraphicsPresenter(MultiplyDataPresenter):
         ax.set_xticklabels(data["game_info"])
         ax.legend()
         self._add_labels(ax, ax.patches, x - width / 2)
-        self._add_labels(ax, ax.patches[len(data) :], x + width / 2)
+        self._add_labels(ax, ax.patches[len(data):], x + width / 2)
 
     def _get_assists_bars(self, ax: Axes, data: DataFrame) -> None:
         x = np.arange(len(data))
@@ -231,7 +231,7 @@ class MatplotlibGraphicsPresenter(MultiplyDataPresenter):
         ax.set_xticklabels(data["game_info"])
         ax.legend()
         self._add_labels(ax, ax.patches, x - width / 2)
-        self._add_labels(ax, ax.patches[len(data) :], x + width / 2)
+        self._add_labels(ax, ax.patches[len(data):], x + width / 2)
 
     def _get_kpi_bars(self, ax: Axes, data: DataFrame) -> None:
         colors = [POSITIVE_KPI_COLOR if kpi > 0 else NEGATIVE_KPI_COLOR for kpi in data["kpi"]]
