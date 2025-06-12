@@ -7,10 +7,10 @@ WORKDIR /code
 RUN pip install uv
 
 # Copy only the pyproject.toml and poetry.lock files to install dependencies first
-COPY pyproject.toml ./
+COPY pyproject.toml uv.lock ./
 
 # Install dependencies
-RUN uv pip install -r pyproject.toml --system
+RUN uv sync --locked --no-dev
 
 
 COPY ./main.py /code
@@ -18,6 +18,5 @@ COPY ./main.py /code
 COPY ./src /code/src
 COPY ./common /code/common
 COPY ./images /code/images
-#COPY ./test_main.py /code
 
 CMD python main.py

@@ -11,6 +11,7 @@ from src.constants import (
     ABL_GAME_USERS_STATISTICS_ADDRESS,
     ABL_PLAYED_GAMES_ADDRESS,
     ABL_PLAYER_PROFILE_ADDRESS,
+    MAX_FAST_STATISTICS_GAMES_COUNT,
 )
 from src.domain.dto.leagues_data.abl.fast_statistics import (
     ABLFSGameInfoResponseSchema,
@@ -49,8 +50,8 @@ class ABLParser(LeagueParser[ABLInputBaseSchema]):
             *(asyncio.gather(*players_info_tasks), asyncio.gather(*players_statistics_tasks))
         )
 
+    @staticmethod
     def _match_player_statistics(
-        self,
         player_profile: ABLPlayerFastStatisticsResponseSchema,
         games_info: list[ABLFSGameInfoResponseSchema],
         games_players_info: tuple[list[ABLPlayerGameInfoResponseSchema], ...],
@@ -60,7 +61,6 @@ class ABLParser(LeagueParser[ABLInputBaseSchema]):
         for game_players_info, game_players_statistics, game_info in zip(
             games_players_info, games_players_statistics, games_info
         ):
-            # if not all((player_profile_response, games_info_response)):
             need_player: ABLPlayerGameInfoResponseSchema | None = None
             for player_info in game_players_info:
                 if not player_info:
@@ -76,7 +76,7 @@ class ABLParser(LeagueParser[ABLInputBaseSchema]):
                 if need_player.id == players_statistics.game_user_id:
                     players_statistics.game_info = game_info.game_info
                     player_games_statistics.append(players_statistics)
-        return player_games_statistics
+        return player_games_statistics[::-1]
 
     async def parse_fast_statistic(
         self, data_from_user: ABLInputBaseSchema
@@ -99,7 +99,7 @@ class ABLParser(LeagueParser[ABLInputBaseSchema]):
             raise ServerNotAvailableException()
         player_profile = ABLPlayerFastStatisticsResponseSchema(**player_profile_response)
         games_info = TypeAdapter(list[ABLFSGameInfoResponseSchema]).validate_python(
-            games_info_response
+            games_info_response[:MAX_FAST_STATISTICS_GAMES_COUNT]
         )
         games_players_info_response, games_players_statistics_response = (
             await self._get_player_games_statistics(games_info)

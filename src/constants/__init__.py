@@ -8,8 +8,12 @@ from .graphic_presenter import (
     ASSISTS_COLOR,
     ASSISTS_NAME,
     ASSISTS_TURNOVERS_STEALS_TITLE,
+    BAR_TEXT_HA,
+    BAR_TEXT_VA,
+    BAR_WIDTH_3_BARS,
     DEFENCE_REBOUNDS_COLOR,
     DEFENCE_REBOUNDS_NAME,
+    FONTSIZE,
     FOULS_COLOR,
     FOULS_NAME,
     FOULS_TITLE,
@@ -28,6 +32,8 @@ from .graphic_presenter import (
     POINTS_2_NAME,
     POINTS_3_COLOR,
     POINTS_3_NAME,
+    POINTS_COLORS,
+    POINTS_NAMES,
     POSITIVE_KPI_COLOR,
     REBOUNDS_TITLE,
     RELEASE_1_PERCENT_NAME,
@@ -40,6 +46,8 @@ from .graphic_presenter import (
     SHOTS_2_NAME,
     SHOTS_3_COLOR,
     SHOTS_3_NAME,
+    SHOTS_COLORS,
+    SHOTS_NAMES,
     SHOTS_TITLE,
     STEALS_COLOR,
     STEALS_NAME,
@@ -67,6 +75,7 @@ from .leagues_addresses import (
     MLBL_TEAM_PATH_PARAM,
 )
 from .logs_templates import USER_COMMAND_CALL
+from .others import MAX_FAST_STATISTICS_GAMES_COUNT
 from .telegram_templates import (
     ABL_FAST_STATISTICS_TUTORIAL,
     BAD_MESSAGE_REPLY_MESSAGE,

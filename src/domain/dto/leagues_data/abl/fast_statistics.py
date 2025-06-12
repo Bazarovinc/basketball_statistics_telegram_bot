@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import Field, model_validator
+from pydantic import AliasPath, Field
 
 from common.domain.dto import BaseSchema
 from common.domain.dto.league_reader_input import LeagueTypeEnum
@@ -46,35 +46,25 @@ class ABLPlayerFastStatisticsResponseSchema(PlayerShortInfoBaseSchema):
     last_name: str
 
 
-class ABLShortTeamInfoResponseSchema(BaseSchema):
-    team_name: str = Field(..., alias="name")
-
-
 class ABLFSGameInfoResponseSchema(BaseSchema):
     id: int
-    left_team: ABLShortTeamInfoResponseSchema = Field(..., alias="competitor_team")
-    right_team: ABLShortTeamInfoResponseSchema = Field(..., alias="team")
+    left_team_name: str = Field(..., validation_alias=AliasPath("competitor_team", "name"))
+    right_team_name: str = Field(..., validation_alias=AliasPath("team", "name"))
     game_date: datetime = Field(..., alias="datetime")
 
     @property
     def game_info(self) -> str:
         return GAME_INFO_TEMPLATE.format(
-            team_name_1=self.left_team.team_name,
-            team_name_2=self.right_team.team_name,
+            team_name_1=self.left_team_name,
+            team_name_2=self.right_team_name,
             date=self.game_date.strftime("%d.%m.%Y %H:%M"),
         )
 
 
 class ABLPlayerGameInfoResponseSchema(BaseSchema):
     id: int
-    player_id: int
+    player_id: int = Field(..., validation_alias=AliasPath("team_user", "user", "id"))
     player_number: int | None = Field(None, alias="number")
-
-    @model_validator(mode="before")
-    def get_player_id(cls, values: dict) -> dict:
-        player_id = values["team_user"]["user"]["id"]
-        values["player_id"] = player_id
-        return values
 
 
 class ABLUserStatsPerGameResponseSchema(PlayerStaticsPresenterBaseSchema):

@@ -22,8 +22,33 @@ POINTS_3_COLOR: Final[str] = _RED
 POINTS_3_NAME: Final[str] = "3-ех очковых забито"
 RELEASE_3_PERCENT_NAME: Final[str] = "% реализации 3-ех очковых бросков"
 
+SHOTS_COLORS: Final[dict[int, str]] = {
+    1: SHOTS_1_COLOR,
+    2: SHOTS_2_COLOR,
+    3: SHOTS_3_COLOR,
+}
+
+POINTS_COLORS: Final[dict[int, str]] = {
+    1: POINTS_1_COLOR,
+    2: POINTS_2_COLOR,
+    3: POINTS_3_COLOR,
+}
+
+POINTS_NAMES: Final[dict[int, str]] = {
+    1: POINTS_1_NAME,
+    2: POINTS_2_NAME,
+    3: POINTS_3_NAME,
+}
+
+SHOTS_NAMES: Final[dict[int, str]] = {
+    1: SHOTS_1_NAME,
+    2: SHOTS_2_NAME,
+    3: SHOTS_3_NAME,
+}
+
+
 SHOTS_TITLE: Final[str] = "Реализация бросков"
-TOTAL_SCORE_COLOR: Final[str] = POINTS_3_COLOR
+TOTAL_SCORE_COLOR: Final[str] = _RED
 TOTAL_SCORE_TITLE: Final[str] = "Набрано очков"
 SCORES_PERCENT_TITLE: Final[str] = "Процент реализации бросков"
 
@@ -56,3 +81,9 @@ KPI_TITLE: Final[str] = "КПИ (коэффициент полезности и�
 IMAGE_TYPE: Final[str] = "png"
 IMAGE_WIDTH: Final[int] = 1800
 IMAGE_HEIGHT: Final[int] = 1200
+
+FONTSIZE: Final[int] = 15
+BAR_WIDTH_3_BARS: Final[float] = 0.3
+
+BAR_TEXT_HA: Final[str] = "center"
+BAR_TEXT_VA: Final[str] = "bottom"
