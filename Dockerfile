@@ -10,8 +10,9 @@ RUN pip install uv
 COPY pyproject.toml uv.lock ./
 
 # Install dependencies
-RUN uv sync --locked --no-dev
-
+RUN uv sync --frozen --no-install-project --no-dev
+ENV PATH="/code/.venv/bin:$PATH"
+ENV UV_PROJECT_ENVIRONMENT=/usr/local
 
 COPY ./main.py /code
 
