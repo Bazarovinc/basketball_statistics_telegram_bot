@@ -15,9 +15,7 @@ class FastStatisticsGetter:
         self._parser_factory = parser_factory
         self._presenter = presenter
 
-    async def __call__(
-        self, data_from_user: LeagueUrlsUserInputSchema
-    ) -> FastStatisticsOutputSchema:
+    async def __call__(self, data_from_user: LeagueUrlsUserInputSchema) -> FastStatisticsOutputSchema:
         logger.info("Вызов логики для получения быстрой статистики")
         parser: LeagueParser = self._parser_factory.get_fast_statistics_parser(data_from_user)
         try:

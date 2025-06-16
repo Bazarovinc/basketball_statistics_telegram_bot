@@ -37,9 +37,7 @@ async def get_fast_statistics_result(
     user_message = update.message.text
     logger.info(f"Сообщение-ссылка для fast_statistics от пользователя " f"{user_id}")
     logger.debug(f"Ссылка: {user_message}")
-    wait_message = await context.bot.send_message(
-        update.effective_message.chat_id, text=WAITING_MESSAGE
-    )
+    wait_message = await context.bot.send_message(update.effective_message.chat_id, text=WAITING_MESSAGE)
     delete_task = asyncio.ensure_future(
         context.bot.delete_message(chat_id=wait_message.chat_id, message_id=wait_message.message_id)
     )
@@ -50,27 +48,19 @@ async def get_fast_statistics_result(
         await asyncio.gather(
             *(
                 delete_task,
-                context.bot.send_message(
-                    update.effective_message.chat_id, text=NOT_URL_ERROR_MESSAGE
-                ),
+                context.bot.send_message(update.effective_message.chat_id, text=NOT_URL_ERROR_MESSAGE),
             )
         )
         return ConversationHandler.END
-    if league_type := leagues_service.get_league_type_by_fast_statistics(
-        update.message.reply_to_message.text
-    ):
+    if league_type := leagues_service.get_league_type_by_fast_statistics(update.message.reply_to_message.text):
         try:
-            result = await use_case(
-                LeagueUrlsUserInputSchema(player_url=data_from_user, league_type=league_type)
-            )
+            result = await use_case(LeagueUrlsUserInputSchema(player_url=data_from_user, league_type=league_type))
         except URLValidationException as url_validation_error:
             logger.error(url_validation_error)
             await asyncio.gather(
                 *(
                     delete_task,
-                    context.bot.send_message(
-                        update.effective_message.chat_id, text=BAD_URL_ERROR_MESSAGE
-                    ),
+                    context.bot.send_message(update.effective_message.chat_id, text=BAD_URL_ERROR_MESSAGE),
                 )
             )
             return ConversationHandler.END
@@ -79,9 +69,7 @@ async def get_fast_statistics_result(
             await asyncio.gather(
                 *(
                     delete_task,
-                    context.bot.send_message(
-                        update.effective_message.chat_id, text=LEAGUE_SERVER_ERROR_MESSAGE
-                    ),
+                    context.bot.send_message(update.effective_message.chat_id, text=LEAGUE_SERVER_ERROR_MESSAGE),
                 )
             )
             return ConversationHandler.END
@@ -89,9 +77,7 @@ async def get_fast_statistics_result(
         await asyncio.gather(
             *(
                 delete_task,
-                context.bot.send_message(
-                    update.effective_message.chat_id, text=BAD_MESSAGE_REPLY_MESSAGE
-                ),
+                context.bot.send_message(update.effective_message.chat_id, text=BAD_MESSAGE_REPLY_MESSAGE),
             )
         )
         return ConversationHandler.END
@@ -102,9 +88,7 @@ async def get_fast_statistics_result(
             delete_task,
             context.bot.send_message(
                 update.effective_message.chat_id,
-                text=FAST_STATISTICS_RESULT_MESSAGE.format(
-                    username=result.username, league=result.league.value
-                ),
+                text=FAST_STATISTICS_RESULT_MESSAGE.format(username=result.username, league=result.league.value),
             ),
             context.bot.send_media_group(update.effective_message.chat_id, images),
         )

@@ -96,18 +96,14 @@ class MatplotlibGraphicsPresenter(MultiplyDataPresenter):
     ):
         """Отрисовка сгруппированных столбцов."""
         x = np.arange(len(data))
-        positions = (
-            (-(bar_width / 2), bar_width / 2) if len(groups) == 2 else (-bar_width, 0, bar_width)
-        )
+        positions = (-(bar_width / 2), bar_width / 2) if len(groups) == 2 else (-bar_width, 0, bar_width)
         for (i, (values, name, color)), position in zip(enumerate(groups), positions):
             pos = x + position
             bars = ax.bar(pos, values, width=bar_width, label=name, color=color)
             self._add_labels(ax, bars, pos, fontsize, rotation)
 
     @staticmethod
-    def _add_labels(
-        ax: Axes, bars: BarContainer, positions: np.ndarray, fontsize: float, rotation: int = None
-    ):
+    def _add_labels(ax: Axes, bars: BarContainer, positions: np.ndarray, fontsize: float, rotation: int = None):
         """Добавление текстовых меток над столбцами."""
         for bar, pos in zip(bars, positions):
             height = bar.get_height()
@@ -142,9 +138,7 @@ class MatplotlibGraphicsPresenter(MultiplyDataPresenter):
                 color=POINTS_COLORS.get(point_score),
             )
 
-            for i, (points, shots) in enumerate(
-                zip(data[f"points_{point_score}"], data[f"shots_{point_score}"])
-            ):
+            for i, (points, shots) in enumerate(zip(data[f"points_{point_score}"], data[f"shots_{point_score}"])):
                 if shots != points:
                     ax.text(
                         x[i] + place * BAR_WIDTH_3_BARS,
@@ -197,10 +191,7 @@ class MatplotlibGraphicsPresenter(MultiplyDataPresenter):
             data["shots_1_percent"] = round(data["points_1"] / data["shots_1"] * 100, 2)
             data["shots_2_percent"] = round(data["points_2"] / data["shots_2"] * 100, 2)
             data["shots_3_percent"] = round(data["points_3"] / data["shots_3"] * 100, 2)
-        if (
-            len({"shots_1_percent_name", "shots_2_percent_name", "shots_3_percent_name"} - columns)
-            > 0
-        ):
+        if len({"shots_1_percent_name", "shots_2_percent_name", "shots_3_percent_name"} - columns) > 0:
             data["shots_1_percent_name"] = (
                 data["points_1"].astype(str)
                 + "/"
@@ -227,9 +218,7 @@ class MatplotlibGraphicsPresenter(MultiplyDataPresenter):
             )
         data["kpi_color"] = np.where(data["kpi"] > 0, POSITIVE_KPI_COLOR, NEGATIVE_KPI_COLOR)
 
-    def __call__(
-        self, data: tuple[StatisticPresenterBaseSchema, ...]
-    ) -> tuple[tuple[bytes, str], ...]:
+    def __call__(self, data: tuple[StatisticPresenterBaseSchema, ...]) -> tuple[tuple[bytes, str], ...]:
         logger.info("Построение графиков")
         converted_data = DataFrame([vars(s) for s in data])
         self._prepare_data(converted_data)
@@ -237,9 +226,7 @@ class MatplotlibGraphicsPresenter(MultiplyDataPresenter):
         return (
             (self._draw_shots_and_points(converted_data), SHOTS_TITLE),
             (
-                self._draw_single_bar(
-                    converted_data, "total_points", TOTAL_SCORE_COLOR, TOTAL_SCORE_TITLE
-                ),
+                self._draw_single_bar(converted_data, "total_points", TOTAL_SCORE_COLOR, TOTAL_SCORE_TITLE),
                 TOTAL_SCORE_TITLE,
             ),
             (

@@ -3,7 +3,7 @@ from functools import cached_property
 
 from common.domain.dto.league_reader_input import LeagueTypeEnum
 from common.domain.dto.statistics_presenter import StatisticPresenterSchema
-from src.domain.dto.base.league import LeagueBaseSchema, ScreenshotSchema
+from src.domain.dto.base.league import LeagueBaseSchema
 
 
 class MultiplyDataPresenter(ABC):
@@ -22,11 +22,6 @@ class LeagueInfoPresenterInterface(ABC):
 
     @abstractmethod
     def get_league_by_id(self, league_id: int) -> LeagueBaseSchema:
-        raise NotImplementedError
-
-    @cached_property
-    @abstractmethod
-    def default_tutorial(self) -> tuple[ScreenshotSchema, ...]:
         raise NotImplementedError
 
     @abstractmethod

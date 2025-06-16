@@ -38,9 +38,7 @@ async def on_startup():
     # Установка вебхука
     logger.info("Settings")
     logger.info(app_settings.model_dump_json(indent=4))
-    if await application.bot.set_webhook(
-        app_settings.telegram.webhook.unicode_string() + "webhook"
-    ):
+    if await application.bot.set_webhook(app_settings.telegram.webhook.unicode_string() + "webhook"):
         await application.initialize()
         await setup_commands(application)
         logger.info("Webhook set")

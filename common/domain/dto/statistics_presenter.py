@@ -50,6 +50,4 @@ class PlayerStaticsPresenterBaseSchema(BaseSchema):
 
 
 StatisticPresenterSchema = TypeVar("StatisticPresenterSchema", bound=StatisticPresenterBaseSchema)
-PlayerStaticsPresenterSchema = TypeVar(
-    "PlayerStaticsPresenterSchema", bound=PlayerStaticsPresenterBaseSchema
-)
+PlayerStaticsPresenterSchema = TypeVar("PlayerStaticsPresenterSchema", bound=PlayerStaticsPresenterBaseSchema)

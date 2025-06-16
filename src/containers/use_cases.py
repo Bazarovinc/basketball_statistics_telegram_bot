@@ -15,22 +15,14 @@ class UseCasesContainer(containers.DeclarativeContainer):
     wiring_config = containers.WiringConfiguration(packages=["src.controllers.telegram_bot"])
     presenters = providers.Container(PresentersContainer)
     getaways = providers.Container(GetawaysContainer)
-    leagues_service = providers.Singleton(
-        LeaguesService, leagues_info_presenter=presenters.leagues_info_presenter
-    )
+    leagues_service = providers.Singleton(LeaguesService, leagues_info_presenter=presenters.leagues_info_presenter)
     parser_factory = providers.Factory(
         ParserFactory,
         parsers=providers.Dict(
             {
-                LeagueTypeEnum.ABL: providers.Factory(
-                    ABLParser, league_reader=getaways.league_reader
-                ),
-                LeagueTypeEnum.BCL: providers.Factory(
-                    BCLParser, league_reader=getaways.league_reader
-                ),
-                LeagueTypeEnum.MLBL: providers.Factory(
-                    MLBLParser, league_reader=getaways.league_reader
-                ),
+                LeagueTypeEnum.ABL: providers.Factory(ABLParser, league_reader=getaways.league_reader),
+                LeagueTypeEnum.BCL: providers.Factory(BCLParser, league_reader=getaways.league_reader),
+                LeagueTypeEnum.MLBL: providers.Factory(MLBLParser, league_reader=getaways.league_reader),
             }
         ),
     )

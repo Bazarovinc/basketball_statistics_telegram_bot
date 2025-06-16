@@ -5,7 +5,7 @@ from loguru import logger
 from telegram import Update
 from telegram.ext import ContextTypes, ConversationHandler
 
-from src.constants import FAST_STATISTICS_TUTORIAL_MESSAGE
+from src.constants import PARSE_MODE
 from src.containers.use_cases import UseCasesContainer
 from src.controllers.telegram_bot.utils import generate_tutorial_photos_group
 from src.controllers.telegram_bot.utils.get_callback_query import get_callback_query
@@ -25,13 +25,12 @@ async def get_fast_statistic_tutorial_callback(
         *(
             context.bot.send_message(
                 chat_id=update.effective_message.chat_id,
-                text=FAST_STATISTICS_TUTORIAL_MESSAGE,
+                text=league_info.fast_statistics_info.tutorial.tutorial_text,
+                parse_mode=PARSE_MODE,
             ),
             context.bot.send_media_group(
                 chat_id=update.effective_message.chat_id,
-                media=generate_tutorial_photos_group(
-                    league_info.fast_statistic_tutorial.screenshots
-                ),
+                media=generate_tutorial_photos_group(league_info.fast_statistics_info.tutorial.screenshots),
             ),
         )
     )

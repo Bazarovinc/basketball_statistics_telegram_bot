@@ -21,7 +21,5 @@ class LeagueParser(ABC, Generic[LeagueInputSchema]):
         return self.input_schema(**data.model_dump())
 
     @abstractmethod
-    async def parse_fast_statistic(
-        self, data_from_user: LeagueInputSchema
-    ) -> PlayerStaticsPresenterSchema:
+    async def parse_fast_statistic(self, data_from_user: LeagueInputSchema) -> PlayerStaticsPresenterSchema:
         raise NotImplementedError

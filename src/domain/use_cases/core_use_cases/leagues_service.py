@@ -1,7 +1,7 @@
 from loguru import logger
 
 from common.domain.dto.league_reader_input import LeagueTypeEnum
-from src.domain.dto.base.league import LeagueBaseSchema, ScreenshotSchema
+from src.domain.dto.base.league import LeagueBaseSchema
 from src.presenters.interfaces import LeagueInfoPresenterInterface
 
 
@@ -16,9 +16,6 @@ class LeaguesService:
     def get_league_by_id(self, league_id: str) -> LeagueBaseSchema:
         logger.info(f"Получение лиги с id={league_id}")
         return self._leagues_info_presenter.get_league_by_id(int(league_id.split("_")[-1]))
-
-    def get_default_tutorial(self) -> tuple[ScreenshotSchema, ...]:
-        return self._leagues_info_presenter.default_tutorial
 
     def get_league_type_by_fast_statistics(self, text: str) -> LeagueTypeEnum | None:
         return self._leagues_info_presenter.get_league_type_by_fast_statistics(text)

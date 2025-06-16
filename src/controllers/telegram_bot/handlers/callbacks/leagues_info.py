@@ -3,6 +3,7 @@ from loguru import logger
 from telegram import InlineKeyboardMarkup, Update
 from telegram.ext import ContextTypes
 
+from src.constants import PARSE_MODE
 from src.containers.use_cases import UseCasesContainer
 from src.controllers.telegram_bot.states import LEAGUE_LINKS_ROUTES
 from src.controllers.telegram_bot.utils import generate_cancel_button
@@ -21,7 +22,8 @@ async def get_fast_statistic_callback(
     league_info = use_case.get_league_by_id(query.data)
     await context.bot.send_message(
         chat_id=update.effective_message.chat_id,
-        text=league_info.fast_statistic_tutorial.tutorial_text,
+        text=league_info.fast_statistics_info.reply_message,
         reply_markup=InlineKeyboardMarkup(generate_cancel_button()),
+        parse_mode=PARSE_MODE,
     )
     return LEAGUE_LINKS_ROUTES

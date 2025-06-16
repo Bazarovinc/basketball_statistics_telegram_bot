@@ -76,7 +76,5 @@ class MLBLUserStatsPerGameResponseSchema(PlayerStaticsPresenterBaseSchema):
     statistics_per_game: list[MLBLGameStatisticSchema] = Field(..., alias="GameStats")
 
     @field_validator("statistics_per_game", mode="after")
-    def cut_games_statistics(
-        cls, value: list[MLBLGameStatisticSchema]
-    ) -> list[MLBLGameStatisticSchema]:
+    def cut_games_statistics(cls, value: list[MLBLGameStatisticSchema]) -> list[MLBLGameStatisticSchema]:
         return value[-MAX_FAST_STATISTICS_GAMES_COUNT:]

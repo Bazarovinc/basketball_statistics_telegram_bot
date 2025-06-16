@@ -37,18 +37,12 @@ class ABLParser(LeagueParser[ABLInputBaseSchema]):
         players_info_tasks, players_statistics_tasks = [], []
         for game_info in games_info:
             players_info_tasks.append(
-                self._league_reader.get_data_json(
-                    self.game_users_address.format(game_id=game_info.id)
-                )
+                self._league_reader.get_data_json(self.game_users_address.format(game_id=game_info.id))
             )
             players_statistics_tasks.append(
-                self._league_reader.get_data_json(
-                    self.game_users_statistics_address.format(game_id=game_info.id)
-                )
+                self._league_reader.get_data_json(self.game_users_statistics_address.format(game_id=game_info.id))
             )
-        return await asyncio.gather(
-            *(asyncio.gather(*players_info_tasks), asyncio.gather(*players_statistics_tasks))
-        )
+        return await asyncio.gather(*(asyncio.gather(*players_info_tasks), asyncio.gather(*players_statistics_tasks)))
 
     @staticmethod
     def _match_player_statistics(
@@ -78,9 +72,7 @@ class ABLParser(LeagueParser[ABLInputBaseSchema]):
                     player_games_statistics.append(players_statistics)
         return player_games_statistics[::-1]
 
-    async def parse_fast_statistic(
-        self, data_from_user: ABLInputBaseSchema
-    ) -> PlayerStaticsPresenterSchema:
+    async def parse_fast_statistic(self, data_from_user: ABLInputBaseSchema) -> PlayerStaticsPresenterSchema:
         data_from_user = self._validate_input(data_from_user)
         player_profile_response, games_info_response = await asyncio.gather(
             *(
@@ -101,15 +93,15 @@ class ABLParser(LeagueParser[ABLInputBaseSchema]):
         games_info = TypeAdapter(list[ABLFSGameInfoResponseSchema]).validate_python(
             games_info_response[:MAX_FAST_STATISTICS_GAMES_COUNT]
         )
-        games_players_info_response, games_players_statistics_response = (
-            await self._get_player_games_statistics(games_info)
+        games_players_info_response, games_players_statistics_response = await self._get_player_games_statistics(
+            games_info
         )
-        games_players_info = TypeAdapter(
-            tuple[list[ABLPlayerGameInfoResponseSchema], ...]
-        ).validate_python(games_players_info_response)
-        games_players_statistics = TypeAdapter(
-            tuple[list[ABLGameStatisticsSchema], ...]
-        ).validate_python(games_players_statistics_response)
+        games_players_info = TypeAdapter(tuple[list[ABLPlayerGameInfoResponseSchema], ...]).validate_python(
+            games_players_info_response
+        )
+        games_players_statistics = TypeAdapter(tuple[list[ABLGameStatisticsSchema], ...]).validate_python(
+            games_players_statistics_response
+        )
         return ABLUserStatsPerGameResponseSchema(
             player_info=player_profile,
             statistics_per_game=self._match_player_statistics(

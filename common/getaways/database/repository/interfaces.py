@@ -31,9 +31,7 @@ class IRetrieveOneMixin(BaseRepositoryProtocol):
         raise NotImplementedError
 
     @abstractmethod
-    async def get_first_by_filters(
-        self, filters: dict, response_schema: Schema = None
-    ) -> Schema | None:
+    async def get_first_by_filters(self, filters: dict, response_schema: Schema = None) -> Schema | None:
         raise NotImplementedError
 
 

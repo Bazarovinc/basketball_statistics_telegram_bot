@@ -20,15 +20,11 @@ async def get_fast_statistic_tutorial_keyboard(
     context: ContextTypes.DEFAULT_TYPE,
     use_case: LeaguesService = Provide[UseCasesContainer.leagues_service],
 ) -> int:
-    logger.info(
-        USER_COMMAND_CALL.format(command=update.message.text, user_id=update.effective_user.id)
-    )
+    logger.info(USER_COMMAND_CALL.format(command=update.message.text, user_id=update.effective_user.id))
     await update.message.reply_text(
         FAST_STATISTICS_TUTORIAL_COMMAND_MESSAGE,
         reply_markup=InlineKeyboardMarkup(
-            generate_leagues_keyboard(
-                use_case.get_all_leagues(), FAST_STATISTICS_LEAGUE_TUTORIAL_BUTTON_TEMPLATE
-            )
+            generate_leagues_keyboard(use_case.get_all_leagues(), FAST_STATISTICS_LEAGUE_TUTORIAL_BUTTON_TEMPLATE)
             + generate_cancel_button(),
         ),
     )

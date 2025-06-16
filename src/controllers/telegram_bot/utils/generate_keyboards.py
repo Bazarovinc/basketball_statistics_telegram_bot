@@ -12,8 +12,7 @@ def generate_leagues_keyboard(
 ) -> list[tuple[InlineKeyboardButton]]:
     logger.info("Генерация кнопок выбора лиг")
     return [
-        (InlineKeyboardButton(league.name, callback_data=callback_template + str(league.id)),)
-        for league in leagues
+        (InlineKeyboardButton(league.name, callback_data=callback_template + str(league.id)),) for league in leagues
     ]
 
 

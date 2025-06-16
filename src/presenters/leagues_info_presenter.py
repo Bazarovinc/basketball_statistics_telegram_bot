@@ -1,12 +1,7 @@
 from functools import cache, cached_property
 
 from common.domain.dto.league_reader_input import LeagueTypeEnum
-from src.domain.dto.base.league import (
-    FAST_STATISTICS_DEFAULT_TUTORIAL_SCREENSHOTS,
-    LEAGUES,
-    LeagueBaseSchema,
-    ScreenshotSchema,
-)
+from src.domain.dto.base.league import LEAGUES, LeagueBaseSchema
 from src.presenters.interfaces import LeagueInfoPresenterInterface
 
 
@@ -23,13 +18,9 @@ class LeagueInfoPresenter(LeagueInfoPresenterInterface):
             return league
         raise KeyError(f"Лига с id {league_id} не найдена")
 
-    @cached_property
-    def default_tutorial(self) -> tuple[ScreenshotSchema, ...]:
-        return FAST_STATISTICS_DEFAULT_TUTORIAL_SCREENSHOTS
-
     @cache
     def get_league_type_by_fast_statistics(self, text: str) -> LeagueTypeEnum | None:
         for league_info in self.leagues.values():
-            if league_info.fast_statistic_tutorial.tutorial_text == text:
+            if league_info.fast_statistics_info.profile_link.unicode_string() in text:
                 return league_info.league_type
         return None

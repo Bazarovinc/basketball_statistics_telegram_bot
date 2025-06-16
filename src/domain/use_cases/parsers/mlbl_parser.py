@@ -39,13 +39,9 @@ class MLBLParser(LeagueParser[MLBLInputBaseSchema]):
 
     def _set_player_addresses_variables(self, data_from_user: MLBLInputBaseSchema) -> None:
         logger.info("Формирование URL-адресов для получения данных по игроку")
-        self.player_profile_address = AnyHttpUrl(
-            self.player_profile_address.format(player_id=data_from_user.player_id)
-        )
+        self.player_profile_address = AnyHttpUrl(self.player_profile_address.format(player_id=data_from_user.player_id))
         self.player_stats_address = AnyHttpUrl(
-            self.player_stats_address.format(
-                player_id=data_from_user.player_id, comp_id=data_from_user.player_comp_id
-            )
+            self.player_stats_address.format(player_id=data_from_user.player_id, comp_id=data_from_user.player_comp_id)
         )
 
     # def _set_team_addresses_variables(self, data_from_user: MLBLInputBaseSchema) -> None:
@@ -119,9 +115,7 @@ class MLBLParser(LeagueParser[MLBLInputBaseSchema]):
     #         games_statistic,
     #     )
 
-    async def parse_fast_statistic(
-        self, data_from_user: MLBLInputBaseSchema
-    ) -> MLBLUserStatsPerGameResponseSchema:
+    async def parse_fast_statistic(self, data_from_user: MLBLInputBaseSchema) -> MLBLUserStatsPerGameResponseSchema:
         data_from_user = self._validate_input(data_from_user)
         logger.info("Получение данных из лиги МЛБЛ для быстрой статистики")
         self._set_player_addresses_variables(data_from_user)

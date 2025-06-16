@@ -61,15 +61,11 @@ class RetrieveOneMixin(IRetrieveOneMixin, BaseRepository):
         _obj = await self._get_one_by_query(_query)
         return TypeAdapter(response_schema or self.schema).validate_python(_obj)
 
-    async def get_one_by_filters(
-        self, filters: dict, response_schema: Type[Schema] = None
-    ) -> Schema:
+    async def get_one_by_filters(self, filters: dict, response_schema: Type[Schema] = None) -> Schema:
         _obj = await self._get_one_by_query(self._filter(filters))
         return TypeAdapter(response_schema or self.schema).validate_python(_obj)
 
-    async def get_first_by_filters(
-        self, filters: dict, response_schema: Schema = None
-    ) -> Schema | None:
+    async def get_first_by_filters(self, filters: dict, response_schema: Schema = None) -> Schema | None:
         if _obj := await self._get_first_by_query(self._filter(filters)):
             return TypeAdapter(response_schema or self.schema).validate_python(_obj)
         return None
@@ -89,9 +85,7 @@ class RetrieveManyMixin(IRetrieveManyMixin, BaseRepository):
                 _query = _query.where(attribute == value)
         result = await self._session.execute(_query)
         _objs = result.unique().scalars().all()
-        return TypeAdapter(
-            list[response_schema] if response_schema else list[self.schema]
-        ).validate_python(_objs)
+        return TypeAdapter(list[response_schema] if response_schema else list[self.schema]).validate_python(_objs)
 
 
 class DeleteMixin(IDeleteMixin, BaseRepository):

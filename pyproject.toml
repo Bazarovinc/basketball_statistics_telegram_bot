@@ -1,38 +1,18 @@
 [project]
 name = "baskteball-statistics-telegram-bot"
-version = "0.0.49"
+version = "0.1.0"
 description = "Telegram bot for parsing amateuer basketball leags (MLBL, ABL, BCL) and use it for analyzies"
 authors = [ "Nikita Veselenko <nikvesel@mail.ru>",]
 requires-python = ">=3.11"
-dependencies = [
-    "aenum>=3.1.15",
-    "beautifulsoup4>=4.13.3",
-    "dependency-injector>=4.46.0",
-    "fastapi>=0.115.12",
-    "httpx>=0.28.1",
-    "loguru>=0.7.3",
-    "lxml>=5.3.1",
-    "matplotlib>=3.10.1",
-    "numpy>=2.2.4",
-    "pandas>=2.2.3",
-    "pydantic>=2.11.1",
-    "pydantic-settings>=2.8.1",
-    "python-telegram-bot>=22.0",
-    "uvicorn>=0.34.0"
-]
+dependencies = [ "aenum>=3.1.15", "beautifulsoup4>=4.13.3", "dependency-injector>=4.46.0", "fastapi>=0.115.12", "httpx>=0.28.1", "loguru>=0.7.3", "lxml>=5.3.1", "matplotlib>=3.10.1", "numpy>=2.2.4", "pandas>=2.2.3", "pydantic>=2.11.1", "pydantic-settings>=2.8.1", "python-telegram-bot>=22.0", "uvicorn>=0.34.0",]
 
 [dependency-groups]
-dev = [
- "black>=25.1.0",
- "flake8>=7.2.0",
- "isort>=6.0.1",
- "toml>=0.10.2",
-]
+dev = [ "black>=25.1.0", "flake8>=7.2.0", "isort>=6.0.1", "toml>=0.10.2",]
 
 [tool.black]
-line-length = 100
+line-length = 120
 
 [tool.isort]
 multi_line_output = 3
-line_length = 100
+line_length = 120
 include_trailing_comma = true

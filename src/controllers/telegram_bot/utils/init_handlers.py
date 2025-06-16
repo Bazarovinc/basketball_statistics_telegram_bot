@@ -1,12 +1,5 @@
 from telegram import BotCommand
-from telegram.ext import (
-    Application,
-    CallbackQueryHandler,
-    CommandHandler,
-    ConversationHandler,
-    MessageHandler,
-    filters,
-)
+from telegram.ext import Application, CallbackQueryHandler, CommandHandler, ConversationHandler, MessageHandler, filters
 
 from src.constants import (
     FAST_STATISTICS_COMMAND_NAME,
@@ -35,11 +28,7 @@ from src.controllers.telegram_bot.handlers import (
     get_info_message,
     get_start_message,
 )
-from src.controllers.telegram_bot.states import (
-    LEAGUE_LINKS_ROUTES,
-    START_ROUTES,
-    TUTORIAL_START_ROUTES,
-)
+from src.controllers.telegram_bot.states import LEAGUE_LINKS_ROUTES, START_ROUTES, TUTORIAL_START_ROUTES
 
 START_COMMAND_HANDLER = CommandHandler(
     START_COMMAND_NAME,

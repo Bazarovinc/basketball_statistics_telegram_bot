@@ -8,9 +8,7 @@ def generate_tutorial_photos_group(
 ) -> tuple[InputMediaPhoto, ...]:
     return tuple(
         (
-            InputMediaPhoto(
-                open(screenshot.screenshot_path, "rb"), caption=screenshot.tutorial_caption
-            )
+            InputMediaPhoto(open(screenshot.screenshot_path, "rb"), caption=screenshot.tutorial_caption)
             for screenshot in images
         )
     )
