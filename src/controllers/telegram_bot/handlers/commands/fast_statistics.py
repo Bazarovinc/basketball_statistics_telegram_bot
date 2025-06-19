@@ -3,7 +3,7 @@ from loguru import logger
 from telegram import InlineKeyboardMarkup, Update
 from telegram.ext import ContextTypes
 
-from src.constants import FAST_STATISTICS_MESSAGE, USER_COMMAND_CALL
+from src.constants import FAST_STATISTICS_MESSAGE, PARSE_MODE, USER_COMMAND_CALL
 from src.constants.templates import FAST_STATISTICS_LEAGUE_BUTTON_TEMPLATE
 from src.containers.use_cases import UseCasesContainer
 from src.controllers.telegram_bot.states import START_ROUTES
@@ -20,6 +20,7 @@ async def get_fast_statistics_keyboard(
     logger.info(USER_COMMAND_CALL.format(command=update.message.text, user_id=update.effective_user.id))
     await update.message.reply_text(
         FAST_STATISTICS_MESSAGE,
+        parse_mode=PARSE_MODE,
         reply_markup=InlineKeyboardMarkup(
             generate_leagues_keyboard(use_case.get_all_leagues(), FAST_STATISTICS_LEAGUE_BUTTON_TEMPLATE)
             + generate_cancel_button(),

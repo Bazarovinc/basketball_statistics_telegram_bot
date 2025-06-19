@@ -14,6 +14,7 @@ from src.constants.telegram_templates import (
     LEAGUE_SERVER_ERROR_MESSAGE,
     NOT_REPLY_MESSAGE,
     NOT_URL_ERROR_MESSAGE,
+    PARSE_MODE,
     WAITING_MESSAGE,
 )
 from src.containers.use_cases import UseCasesContainer
@@ -31,7 +32,11 @@ async def get_fast_statistics_result(
 ) -> int:
     user_id = update.effective_user.id
     if not update.message.reply_to_message:
-        await context.bot.send_message(update.effective_message.chat_id, text=NOT_REPLY_MESSAGE)
+        await context.bot.send_message(
+            update.effective_message.chat_id,
+            text=NOT_REPLY_MESSAGE,
+            parse_mode=PARSE_MODE,
+        )
     logger.info(update.message.message_id)
     logger.info(update.message.effect_id)
     user_message = update.message.text
@@ -60,7 +65,11 @@ async def get_fast_statistics_result(
             await asyncio.gather(
                 *(
                     delete_task,
-                    context.bot.send_message(update.effective_message.chat_id, text=BAD_URL_ERROR_MESSAGE),
+                    context.bot.send_message(
+                        update.effective_message.chat_id,
+                        text=BAD_URL_ERROR_MESSAGE,
+                        parse_mode=PARSE_MODE,
+                    ),
                 )
             )
             return ConversationHandler.END
@@ -69,7 +78,11 @@ async def get_fast_statistics_result(
             await asyncio.gather(
                 *(
                     delete_task,
-                    context.bot.send_message(update.effective_message.chat_id, text=LEAGUE_SERVER_ERROR_MESSAGE),
+                    context.bot.send_message(
+                        update.effective_message.chat_id,
+                        text=LEAGUE_SERVER_ERROR_MESSAGE,
+                        parse_mode=PARSE_MODE,
+                    ),
                 )
             )
             return ConversationHandler.END
@@ -77,7 +90,11 @@ async def get_fast_statistics_result(
         await asyncio.gather(
             *(
                 delete_task,
-                context.bot.send_message(update.effective_message.chat_id, text=BAD_MESSAGE_REPLY_MESSAGE),
+                context.bot.send_message(
+                    update.effective_message.chat_id,
+                    text=BAD_MESSAGE_REPLY_MESSAGE,
+                    parse_mode=PARSE_MODE,
+                ),
             )
         )
         return ConversationHandler.END
@@ -85,12 +102,13 @@ async def get_fast_statistics_result(
     logger.info("Отправка графиков")
     await asyncio.gather(
         *(
-            delete_task,
             context.bot.send_message(
                 update.effective_message.chat_id,
                 text=FAST_STATISTICS_RESULT_MESSAGE.format(username=result.username, league=result.league.value),
+                parse_mode=PARSE_MODE,
             ),
             context.bot.send_media_group(update.effective_message.chat_id, images),
         )
     )
+    await delete_task
     return ConversationHandler.END

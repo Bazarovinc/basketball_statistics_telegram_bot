@@ -55,7 +55,7 @@ def main() -> None:
     pyproject_data["project"]["version"] = version_data.new_version
     with open("pyproject.toml", "w") as file:
         toml.dump(pyproject_data, file)
-    print("Версия обновлена до:", version_data.new_version)
+    print(f"Версия обновлена {version_data.version} -> {version_data.new_version}")
 
 
 if __name__ == "__main__":
