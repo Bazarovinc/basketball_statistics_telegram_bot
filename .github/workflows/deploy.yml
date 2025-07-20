@@ -22,50 +22,50 @@ jobs:
           version-file: ./pyproject.toml
       - run: ruff check
       - run: ruff format --check
-#  deploy:
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v4
-#
-#      - name: Extract version from pyproject.toml
-#        id: version
-#        run: |
-#          VERSION=$(grep 'version =' pyproject.toml | awk -F\" '{print $2}')
-#          echo "version=${VERSION}" >> $GITHUB_OUTPUT
-#      - name: Login to Yandex Container Registry
-#        uses: yc-actions/yc-cr-login@v2
-#        with:
-#          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
-#      - name: Build and push Docker image
-#        env:
-#          CR_REGISTRY: ${{ secrets.YC_REGISTRY_ID }}
-#          CR_REPOSITORY: basketball-statistics-telegram-bot
-#          IMAGE_TAG: ${{ steps.version.outputs.version }}
-#        run: |
-#            docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG .
-#            docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
-#      - name: Deploy Serverless Container
-#        id: deploy-sls-container
-#        uses: yc-actions/yc-sls-container-deploy@v2.8.0
-#        env:
-#          CR_REGISTRY: ${{ secrets.YC_REGISTRY_ID }}
-#          CR_REPOSITORY: basketball-statistics-telegram-bot
-#          IMAGE_TAG: ${{ steps.version.outputs.version }}
-#          ACTIONS_STEP_DEBUG: true
-#        with:
-#          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
-#          container-name: basketball-statistics-telegram-bot
-#          folder-id:  ${{ secrets.YC_SLS_FOLDER_ID }}
-#          revision-service-account-id: ${{ secrets.YC_SERVICE_ACCOUNT_ID }}
-#          revision-env: |
-#            WEBHOOK=${{ secrets.TG_BOT_WEBHOOK }}
-#          revision-secrets: |
-#            token=${{ secrets.YC_LOCKBOX_SECRET_ID }}/${{ secrets.YC_LOCKBOX_SECRET_VERSION_ID }}/${{ secrets.YC_LOCKBOX_SECRET_KEY }}
-#          revision-cores: 1
-#          revision-memory: 768Mb
-#          revision-core-fraction: 5
-#          revision-concurrency: 1
-#          revision-image-url: cr.yandex/${{ env.CR_REGISTRY }}/${{ env.CR_REPOSITORY }}:${{ env.IMAGE_TAG }}
-#          revision-execution-timeout: 180
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract version from pyproject.toml
+        id: version
+        run: |
+          VERSION=$(grep 'version =' pyproject.toml | awk -F\" '{print $2}')
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+      - name: Login to Yandex Container Registry
+        uses: yc-actions/yc-cr-login@v2
+        with:
+          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
+      - name: Build and push Docker image
+        env:
+          CR_REGISTRY: ${{ secrets.YC_REGISTRY_ID }}
+          CR_REPOSITORY: basketball-statistics-telegram-bot
+          IMAGE_TAG: ${{ steps.version.outputs.version }}
+        run: |
+            docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG .
+            docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
+      - name: Deploy Serverless Container
+        id: deploy-sls-container
+        uses: yc-actions/yc-sls-container-deploy@v2.8.0
+        env:
+          CR_REGISTRY: ${{ secrets.YC_REGISTRY_ID }}
+          CR_REPOSITORY: basketball-statistics-telegram-bot
+          IMAGE_TAG: ${{ steps.version.outputs.version }}
+          ACTIONS_STEP_DEBUG: true
+        with:
+          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
+          container-name: basketball-statistics-telegram-bot
+          folder-id:  ${{ secrets.YC_SLS_FOLDER_ID }}
+          revision-service-account-id: ${{ secrets.YC_SERVICE_ACCOUNT_ID }}
+          revision-env: |
+            WEBHOOK=${{ secrets.TG_BOT_WEBHOOK }}
+          revision-secrets: |
+            token=${{ secrets.YC_LOCKBOX_SECRET_ID }}/${{ secrets.YC_LOCKBOX_SECRET_VERSION_ID }}/${{ secrets.YC_LOCKBOX_SECRET_KEY }}
+          revision-cores: 1
+          revision-memory: 768Mb
+          revision-core-fraction: 5
+          revision-concurrency: 1
+          revision-image-url: cr.yandex/${{ env.CR_REGISTRY }}/${{ env.CR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+          revision-execution-timeout: 180

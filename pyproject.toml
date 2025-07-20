@@ -1,24 +1,18 @@
 [project]
 name = "baskteball-statistics-telegram-bot"
-version = "1.0.1"
+version = "1.0.2"
 description = "Telegram bot for parsing amateuer basketball leags (MLBL, ABL, BCL) and use it for analyzies"
 authors = [ "Nikita Veselenko <nikvesel@mail.ru>",]
 requires-python = ">=3.11"
 dependencies = [ "aenum>=3.1.15", "beautifulsoup4>=4.13.3", "dependency-injector>=4.46.0", "fastapi>=0.115.12", "httpx>=0.28.1", "loguru>=0.7.3", "lxml>=5.3.1", "matplotlib>=3.10.1", "numpy>=2.2.4", "pandas>=2.2.3", "pydantic>=2.11.1", "pydantic-settings>=2.8.1", "python-telegram-bot>=22.0", "uvicorn>=0.34.0",]
 
 [dependency-groups]
-dev = [
- "ruff>=0.12.4",
- "toml>=0.10.2",
-]
-
-[tool.ruff.lint]
-select = ["E", "F", "UP", "B", "SIM", "ANN", "A", "PL", "ASYNC", "DTZ", "FIX", "INT", "ICN", "LOG",
-    "G", "INP", "PIE", "PT", "Q", "SIM", "TC", "ARG", "N", "W", "UP", "TRY", "I"]
-ignore = ["ANN401", "PLR0913", "FIX002", "FIX001", "TRY003", "N805", "INP001", "PT006", "PT011", "PIE804", "B905", "DTZ007", "N818"]
-
-
+dev = [ "ruff>=0.12.4", "toml>=0.10.2",]
 
 [tool.ruff]
 line-length = 120
-exclude = ["__init__.py"]
+exclude = [ "__init__.py",]
+
+[tool.ruff.lint]
+select = [ "E", "F", "UP", "B", "SIM", "ANN", "A", "PL", "ASYNC", "DTZ", "FIX", "INT", "ICN", "LOG", "G", "INP", "PIE", "PT", "Q", "SIM", "TC", "ARG", "N", "W", "UP", "TRY", "I",]
+ignore = [ "ANN401", "PLR0913", "FIX002", "FIX001", "TRY003", "N805", "INP001", "PT006", "PT011", "PIE804", "B905", "DTZ007", "N818",]
