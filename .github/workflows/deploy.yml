@@ -17,7 +17,8 @@ jobs:
       - name: Debug (проверить содержимое репозитория)
         run: |
           ls -la
-          cat ./pyproject.toml  # Убедимся, что файл читается
+          ls -la .
+#          cat ./pyproject.toml  # Убедимся, что файл читается
       - name: Install a version from a specified version file
         uses: astral-sh/ruff-action@v3
         with:
