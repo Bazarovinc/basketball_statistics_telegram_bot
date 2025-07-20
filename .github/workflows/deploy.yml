@@ -20,7 +20,7 @@ jobs:
           version-file: "./pyproject.toml"
           src: "."
       - uses: astral-sh/ruff-action@v3
-      - run: ruff check common
+      - run: ruff check
       - run: ruff format --check
 
   deploy:
