@@ -1,11 +1,11 @@
-from httpx import AsyncClient, AsyncHTTPTransport
+from httpx import AsyncClient, AsyncHTTPTransport, codes
 from loguru import logger
 
 from common.getaways.league_reader import LeagueReaderInterface
 
 
 class LeagueReader(LeagueReaderInterface):
-    def __init__(self):
+    def __init__(self) -> None:
         self._retries = 3
 
     async def get_data_json(self, address: str) -> dict | None:
@@ -13,7 +13,7 @@ class LeagueReader(LeagueReaderInterface):
         retry_strategy = AsyncHTTPTransport(retries=self._retries)
         async with AsyncClient(transport=retry_strategy) as http_client:
             response = await http_client.get(address)
-            if response.status_code == 200:
+            if response.status_code == codes.OK:
                 logger.info("Данные успешно получены")
                 return response.json()
             else:
@@ -26,7 +26,7 @@ class LeagueReader(LeagueReaderInterface):
         retry_strategy = AsyncHTTPTransport(retries=self._retries)
         async with AsyncClient(transport=retry_strategy) as http_client:
             response = await http_client.get(address)
-            if response.status_code == 200:
+            if response.status_code == codes.OK:
                 logger.info("Данные успешно получены")
                 return response.text
             else:

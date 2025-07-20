@@ -1,5 +1,4 @@
 class BaseCommonException(Exception):
-
     message: str
 
     def __init__(self) -> None:

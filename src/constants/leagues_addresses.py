@@ -9,7 +9,7 @@ MLBL_PLAYER_PROFILE_EXAMPLE_ADDRESS: Final[AnyHttpUrl] = AnyHttpUrl(
 
 MLBL_PLAYER_PROFILE_ADDRESS: Final[str] = "https://reg.infobasket.su/Widget/PlayerPage/{player_id}?format=json"
 MLBL_PLAYER_STATS_ADDRESS: Final[str] = (
-    "https://reg.infobasket.su/Widget/PlayerStats/{player_id}?compId={comp_id}&" "filter=1&format=json&team=0"
+    "https://reg.infobasket.su/Widget/PlayerStats/{player_id}?compId={comp_id}&filter=1&format=json&team=0"
 )
 MLBL_PLAYER_TEAM_INFO_ADDRESS: Final[str] = (
     "https://reg.infobasket.su/Widget/TeamRoster/{team_id}?compId={comp_id}&format=json&lang=ru"
@@ -30,7 +30,7 @@ ABL_HOST: Final[str] = "ablforpeople.com"
 ABL_PLAYER_PATH_PARAM: Final[str] = "player"
 ABL_PLAYER_PROFILE_ADDRESS: Final[str] = "https://mtgame.ru/api/v1/league_player/{player_id}/"
 ABL_PLAYED_GAMES_ADDRESS: Final[str] = (
-    "https://mtgame.ru/api/v1/tournament_season/{season_id}/games/" "?page=1&size=999&league_player_id={player_id}"
+    "https://mtgame.ru/api/v1/tournament_season/{season_id}/games/?page=1&size=999&league_player_id={player_id}"
 )
 ABL_GAME_USERS_ADDRESS: Final[str] = "https://mtgame.ru/api/v1/tournament_game/{game_id}/users/"
 ABL_GAME_USERS_STATISTICS_ADDRESS: Final[str] = (

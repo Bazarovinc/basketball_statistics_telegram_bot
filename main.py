@@ -34,7 +34,7 @@ async def health() -> Response:
 
 # Установка вебхука при старте приложения
 @app.on_event("startup")
-async def on_startup():
+async def on_startup() -> None:
     # Установка вебхука
     logger.info("Settings")
     logger.info(app_settings.model_dump_json(indent=4))

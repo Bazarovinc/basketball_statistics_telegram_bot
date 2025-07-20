@@ -6,8 +6,7 @@ from src.presenters.interfaces import LeagueInfoPresenterInterface
 
 
 class LeaguesService:
-
-    def __init__(self, leagues_info_presenter: LeagueInfoPresenterInterface):
+    def __init__(self, leagues_info_presenter: LeagueInfoPresenterInterface) -> None:
         self._leagues_info_presenter = leagues_info_presenter
 
     def get_all_leagues(self) -> tuple[LeagueBaseSchema, ...]:

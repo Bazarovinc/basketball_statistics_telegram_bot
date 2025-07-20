@@ -5,7 +5,7 @@ from pydantic import AnyHttpUrl
 
 from common.exceptions.parsers_exceptions import ServerNotAvailableException
 from src.constants import MLBL_PLAYER_PROFILE_ADDRESS, MLBL_PLAYER_STATS_ADDRESS
-from src.domain.dto.leagues_data.mlbl.fast_statistics import MLBLUserStatsPerGameResponseSchema
+from src.domain.dto.leagues_data.mlbl.fast_statistics import MLBLFastStatisticsSchema
 from src.domain.dto.leagues_data.mlbl.reader_input import MLBLInputBaseSchema
 from src.domain.use_cases.parsers.interface import LeagueParser
 
@@ -115,7 +115,7 @@ class MLBLParser(LeagueParser[MLBLInputBaseSchema]):
     #         games_statistic,
     #     )
 
-    async def parse_fast_statistic(self, data_from_user: MLBLInputBaseSchema) -> MLBLUserStatsPerGameResponseSchema:
+    async def get_fast_statistics(self, data_from_user: MLBLInputBaseSchema) -> MLBLFastStatisticsSchema:
         data_from_user = self._validate_input(data_from_user)
         logger.info("Получение данных из лиги МЛБЛ для быстрой статистики")
         self._set_player_addresses_variables(data_from_user)
@@ -129,4 +129,4 @@ class MLBLParser(LeagueParser[MLBLInputBaseSchema]):
             logger.error("Данный от лиги не получены")
             raise ServerNotAvailableException()
         statistics["player_info"] = player_info
-        return MLBLUserStatsPerGameResponseSchema(**statistics)
+        return MLBLFastStatisticsSchema(**statistics)

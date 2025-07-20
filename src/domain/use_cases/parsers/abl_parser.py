@@ -4,7 +4,6 @@ from typing import Any
 from loguru import logger
 from pydantic import TypeAdapter
 
-from common.domain.dto.statistics_presenter import PlayerStaticsPresenterSchema
 from common.exceptions.parsers_exceptions import ServerNotAvailableException
 from src.constants import (
     ABL_GAME_USERS_ADDRESS,
@@ -14,11 +13,11 @@ from src.constants import (
     MAX_FAST_STATISTICS_GAMES_COUNT,
 )
 from src.domain.dto.leagues_data.abl.fast_statistics import (
+    ABLFastStatisticsSchema,
     ABLFSGameInfoResponseSchema,
     ABLGameStatisticsSchema,
     ABLPlayerFastStatisticsResponseSchema,
     ABLPlayerGameInfoResponseSchema,
-    ABLUserStatsPerGameResponseSchema,
 )
 from src.domain.dto.leagues_data.abl.reader_input import ABLInputBaseSchema
 from src.domain.use_cases.parsers.interface import LeagueParser
@@ -72,7 +71,7 @@ class ABLParser(LeagueParser[ABLInputBaseSchema]):
                     player_games_statistics.append(players_statistics)
         return player_games_statistics[::-1]
 
-    async def parse_fast_statistic(self, data_from_user: ABLInputBaseSchema) -> PlayerStaticsPresenterSchema:
+    async def get_fast_statistics(self, data_from_user: ABLInputBaseSchema) -> ABLFastStatisticsSchema:
         data_from_user = self._validate_input(data_from_user)
         player_profile_response, games_info_response = await asyncio.gather(
             *(
@@ -102,7 +101,7 @@ class ABLParser(LeagueParser[ABLInputBaseSchema]):
         games_players_statistics = TypeAdapter(tuple[list[ABLGameStatisticsSchema], ...]).validate_python(
             games_players_statistics_response
         )
-        return ABLUserStatsPerGameResponseSchema(
+        return ABLFastStatisticsSchema(
             player_info=player_profile,
             statistics_per_game=self._match_player_statistics(
                 player_profile, games_info, games_players_info, games_players_statistics

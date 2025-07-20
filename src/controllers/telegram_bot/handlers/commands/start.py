@@ -7,7 +7,7 @@ from src.constants import PARSE_MODE, START_COMMAND_MESSAGE, USER_COMMAND_CALL
 
 async def get_start_message(
     update: Update,
-    context: ContextTypes.DEFAULT_TYPE,
+    context: ContextTypes.DEFAULT_TYPE,  # noqa: ARG001
 ) -> int:
     logger.info(USER_COMMAND_CALL.format(command=update.message.text, user_id=update.effective_user.id))
     await update.message.reply_text(START_COMMAND_MESSAGE, parse_mode=PARSE_MODE)

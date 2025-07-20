@@ -2,19 +2,17 @@ from abc import ABC, abstractmethod
 from functools import cached_property
 
 from common.domain.dto.league_reader_input import LeagueTypeEnum
-from common.domain.dto.statistics_presenter import StatisticPresenterSchema
+from common.domain.dto.statistics_presenter import StatisticsPresenterSchema
 from src.domain.dto.base.league import LeagueBaseSchema
 
 
 class MultiplyDataPresenter(ABC):
-
     @abstractmethod
-    def __call__(self, data: tuple[StatisticPresenterSchema, ...]) -> tuple[tuple[bytes, str], ...]:
+    def __call__(self, data: tuple[StatisticsPresenterSchema, ...]) -> tuple[tuple[bytes, str], ...]:
         raise NotImplementedError
 
 
 class LeagueInfoPresenterInterface(ABC):
-
     @cached_property
     @abstractmethod
     def all_leagues(self) -> tuple[LeagueBaseSchema, ...]:

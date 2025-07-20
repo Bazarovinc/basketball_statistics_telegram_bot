@@ -6,13 +6,13 @@ from common.domain.dto import BaseSchema
 from common.domain.dto.league_reader_input import LeagueTypeEnum
 from common.domain.dto.statistics_presenter import (
     PlayerShortInfoBaseSchema,
-    PlayerStaticsPresenterBaseSchema,
-    StatisticPresenterBaseSchema,
+    PlayerStatisticsPresenterBaseSchema,
+    StatisticsPresenterBaseSchema,
 )
 from src.constants import GAME_INFO_TEMPLATE
 
 
-class ABLGameStatisticsSchema(StatisticPresenterBaseSchema):
+class ABLGameStatisticsSchema(StatisticsPresenterBaseSchema):
     game_user_id: int
     game_info: str | None = None
     player_number: int | None = None
@@ -67,7 +67,7 @@ class ABLPlayerGameInfoResponseSchema(BaseSchema):
     player_number: int | None = Field(None, alias="number")
 
 
-class ABLUserStatsPerGameResponseSchema(PlayerStaticsPresenterBaseSchema):
+class ABLFastStatisticsSchema(PlayerStatisticsPresenterBaseSchema):
     league: LeagueTypeEnum = LeagueTypeEnum.ABL
     player_info: ABLPlayerFastStatisticsResponseSchema | None = None
     statistics_per_game: list[ABLGameStatisticsSchema]

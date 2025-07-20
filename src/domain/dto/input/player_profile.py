@@ -1,7 +1,7 @@
 from datetime import date
 
 from common.domain.dto import BaseSchema
-from src.domain.dto.enums import PlayerGenderEnum, PositionEnum
+from src.enums import PlayerGenderEnum, PositionEnum
 
 
 class MLBLPlayerProfileResponseSchema(BaseSchema):

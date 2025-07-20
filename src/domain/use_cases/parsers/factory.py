@@ -4,7 +4,6 @@ from src.domain.use_cases.parsers.interface import LeagueParser
 
 
 class ParserFactory:
-
     def __init__(self, parsers: dict[LeagueTypeEnum, LeagueParser]) -> None:
         self._parsers = parsers
 

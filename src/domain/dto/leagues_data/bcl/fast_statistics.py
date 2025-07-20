@@ -3,12 +3,12 @@ from pydantic import Field, field_validator, model_validator
 from common.domain.dto.league_reader_input import LeagueTypeEnum
 from common.domain.dto.statistics_presenter import (
     PlayerShortInfoBaseSchema,
-    PlayerStaticsPresenterBaseSchema,
-    StatisticPresenterBaseSchema,
+    PlayerStatisticsPresenterBaseSchema,
+    StatisticsPresenterBaseSchema,
 )
 
 
-class BCLGameStatisticSchema(StatisticPresenterBaseSchema):
+class BCLGameStatisticSchema(StatisticsPresenterBaseSchema):
     game_info: str = Field(..., alias="Матч")
     total_points: int = Field(..., alias="Очки")
     points_1: int | None = 0
@@ -39,11 +39,10 @@ class BCLGameStatisticSchema(StatisticPresenterBaseSchema):
 
     @field_validator("game_info", mode="after")
     def reform_game_info(cls, value: str) -> str:
-        return ":".join((team.strip() for team in value.split("-")))
+        return ":".join(team.strip() for team in value.split("-"))
 
     @model_validator(mode="after")
     def parse_shots(self) -> "BCLGameStatisticSchema":
-
         shots_1, percent_1 = self.shots_1_percent_name.split()
         shots_1 = (int(i) for i in shots_1.split("/"))
         self.points_1, self.shots_1 = shots_1
@@ -69,7 +68,7 @@ class BCLPlayerFastStatisticsResponseSchema(PlayerShortInfoBaseSchema):
     last_name: str
 
 
-class BCLUserStatsPerGameResponseSchema(PlayerStaticsPresenterBaseSchema):
+class BCLFastStatisticsSchema(PlayerStatisticsPresenterBaseSchema):
     league: LeagueTypeEnum = LeagueTypeEnum.BCL
     player_info: BCLPlayerFastStatisticsResponseSchema
     statistics_per_game: list[BCLGameStatisticSchema]

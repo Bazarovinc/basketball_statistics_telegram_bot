@@ -1,14 +1,13 @@
 from abc import ABC, abstractmethod
-from typing import Generic, Type
+from typing import Generic
 
 from common.domain.dto.league_reader_input import LeagueInputSchema, LeagueReaderInputSchema
-from common.domain.dto.statistics_presenter import PlayerStaticsPresenterSchema
+from common.domain.dto.statistics_presenter import PlayerStatisticsPresenterSchema
 from common.getaways.league_reader import LeagueReaderInterface
 
 
 class LeagueParser(ABC, Generic[LeagueInputSchema]):
-
-    input_schema: Type[LeagueInputSchema]
+    input_schema: type[LeagueInputSchema]
 
     def __init__(self, league_reader: LeagueReaderInterface) -> None:
         self._league_reader = league_reader
@@ -21,5 +20,5 @@ class LeagueParser(ABC, Generic[LeagueInputSchema]):
         return self.input_schema(**data.model_dump())
 
     @abstractmethod
-    async def parse_fast_statistic(self, data_from_user: LeagueInputSchema) -> PlayerStaticsPresenterSchema:
+    async def get_fast_statistics(self, data_from_user: LeagueInputSchema) -> PlayerStatisticsPresenterSchema:
         raise NotImplementedError

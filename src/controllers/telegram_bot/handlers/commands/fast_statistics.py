@@ -14,7 +14,7 @@ from src.domain.use_cases.core_use_cases.leagues_service import LeaguesService
 @inject
 async def get_fast_statistics_keyboard(
     update: Update,
-    context: ContextTypes.DEFAULT_TYPE,
+    context: ContextTypes.DEFAULT_TYPE,  # noqa: ARG001
     use_case: LeaguesService = Provide[UseCasesContainer.leagues_service],
 ) -> int:
     logger.info(USER_COMMAND_CALL.format(command=update.message.text, user_id=update.effective_user.id))

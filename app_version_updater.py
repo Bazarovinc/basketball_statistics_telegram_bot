@@ -38,10 +38,9 @@ class VersionData(BaseModel):
 
 
 def main() -> None:
-    with open("pyproject.toml", "r") as file:
+    with open("pyproject.toml") as file:
         pyproject_data = toml.load(file)
         version_data = VersionData(**pyproject_data)
-    d = sys.argv
     match sys.argv:
         case _, "patch":
             version_data.update_patch()

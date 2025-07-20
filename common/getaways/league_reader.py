@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 
 
 class LeagueReaderInterface(ABC):
-
     @abstractmethod
     async def get_data_json(self, address: str) -> dict | None:
         raise NotImplementedError

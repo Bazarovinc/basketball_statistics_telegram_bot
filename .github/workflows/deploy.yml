@@ -3,12 +3,25 @@ name: Deploy Telegram Bot
 on:
   push:
     branches: [master]
+  pull_request:
+    branches: [master]
 
 permissions:
   id-token: write  # Необходимо для OIDC
   contents: read    # Для actions/checkout
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install a version from a specified version file
+        uses: astral-sh/ruff-action@v3
+        with:
+          version-file: "pyproject.toml"
+      - uses: astral-sh/ruff-action@v3
+      - run: ruff check
+      - run: ruff format --check
+
   deploy:
     runs-on: ubuntu-latest
 

@@ -7,7 +7,7 @@ from matplotlib.axes import Axes
 from matplotlib.container import BarContainer
 from pandas import DataFrame
 
-from common.domain.dto.statistics_presenter import StatisticPresenterBaseSchema
+from common.domain.dto.statistics_presenter import StatisticsPresenterSchema
 from src.constants import (
     ASSISTS_COLOR,
     ASSISTS_NAME,
@@ -53,6 +53,8 @@ from src.constants import (
 )
 from src.presenters.interfaces import MultiplyDataPresenter
 
+MIN_GROUPED_BARS: int = 2
+
 
 class MatplotlibGraphicsPresenter(MultiplyDataPresenter):
     @staticmethod
@@ -93,17 +95,17 @@ class MatplotlibGraphicsPresenter(MultiplyDataPresenter):
         bar_width: float,
         fontsize: float,
         rotation: int = None,
-    ):
+    ) -> None:
         """Отрисовка сгруппированных столбцов."""
         x = np.arange(len(data))
-        positions = (-(bar_width / 2), bar_width / 2) if len(groups) == 2 else (-bar_width, 0, bar_width)
-        for (i, (values, name, color)), position in zip(enumerate(groups), positions):
+        positions = (-(bar_width / 2), bar_width / 2) if len(groups) == MIN_GROUPED_BARS else (-bar_width, 0, bar_width)
+        for (_, (values, name, color)), position in zip(enumerate(groups), positions):
             pos = x + position
             bars = ax.bar(pos, values, width=bar_width, label=name, color=color)
             self._add_labels(ax, bars, pos, fontsize, rotation)
 
     @staticmethod
-    def _add_labels(ax: Axes, bars: BarContainer, positions: np.ndarray, fontsize: float, rotation: int = None):
+    def _add_labels(ax: Axes, bars: BarContainer, positions: np.ndarray, fontsize: float, rotation: int = None) -> None:
         """Добавление текстовых меток над столбцами."""
         for bar, pos in zip(bars, positions):
             height = bar.get_height()
@@ -218,7 +220,7 @@ class MatplotlibGraphicsPresenter(MultiplyDataPresenter):
             )
         data["kpi_color"] = np.where(data["kpi"] > 0, POSITIVE_KPI_COLOR, NEGATIVE_KPI_COLOR)
 
-    def __call__(self, data: tuple[StatisticPresenterBaseSchema, ...]) -> tuple[tuple[bytes, str], ...]:
+    def __call__(self, data: tuple[StatisticsPresenterSchema, ...]) -> tuple[tuple[bytes, str], ...]:
         logger.info("Построение графиков")
         converted_data = DataFrame([vars(s) for s in data])
         self._prepare_data(converted_data)

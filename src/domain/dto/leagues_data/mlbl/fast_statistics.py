@@ -1,12 +1,13 @@
 from datetime import datetime
+from typing import Self
 
 from pydantic import AliasPath, Field, field_validator, model_validator
 
 from common.domain.dto.league_reader_input import LeagueTypeEnum
 from common.domain.dto.statistics_presenter import (
     PlayerShortInfoBaseSchema,
-    PlayerStaticsPresenterBaseSchema,
-    StatisticPresenterBaseSchema,
+    PlayerStatisticsPresenterBaseSchema,
+    StatisticsPresenterBaseSchema,
 )
 from common.utils.date_parser import parse_date_from_timestamp
 from src.constants import MAX_FAST_STATISTICS_GAMES_COUNT
@@ -14,7 +15,7 @@ from src.constants.fields import FIELDS_TO_ZERO
 from src.constants.templates import GAME_INFO_TEMPLATE
 
 
-class MLBLGameStatisticSchema(StatisticPresenterBaseSchema):
+class MLBLGameStatisticSchema(StatisticsPresenterBaseSchema):
     game_date: datetime = Field(..., validation_alias=AliasPath("Game", "GameTime"))
     team_1_name: str = Field(..., validation_alias=AliasPath("TeamNameA", "CompTeamNameRu"))
     team_2_name: str = Field(..., validation_alias=AliasPath("TeamNameB", "CompTeamNameRu"))
@@ -56,7 +57,7 @@ class MLBLGameStatisticSchema(StatisticPresenterBaseSchema):
         return value
 
     @model_validator(mode="after")
-    def set_game_info(self) -> "MLBLGameStatisticSchema":
+    def set_game_info(self) -> Self:
         self.game_info = GAME_INFO_TEMPLATE.format(
             team_name_1=self.team_1_name,
             team_name_2=self.team_2_name,
@@ -70,7 +71,7 @@ class MLBLPlayerFastStatisticsResponseSchema(PlayerShortInfoBaseSchema):
     last_name: str = Field(..., alias="PersonLastNameRu")
 
 
-class MLBLUserStatsPerGameResponseSchema(PlayerStaticsPresenterBaseSchema):
+class MLBLFastStatisticsSchema(PlayerStatisticsPresenterBaseSchema):
     league: LeagueTypeEnum = LeagueTypeEnum.MLBL
     player_info: MLBLPlayerFastStatisticsResponseSchema | None = None
     statistics_per_game: list[MLBLGameStatisticSchema] = Field(..., alias="GameStats")
