@@ -17,11 +17,11 @@ jobs:
       - name: Install a version from a specified version file
         uses: astral-sh/ruff-action@v3
         with:
-          version-file: "baskteball_statistics_telegram_bot/pyproject.toml"
+          version-file: ./pyproject.toml"
           src: >-
-            baskteball_statistics_telegram_bot/common/
-            baskteball_statistics_telegram_bot/src/
-            baskteball_statistics_telegram_bot/main.py
+            ./common/
+            ./src/
+            ./main.py
       - uses: astral-sh/ruff-action@v3
       - run: ruff check common
       - run: ruff format --check
@@ -65,7 +65,6 @@ jobs:
           revision-service-account-id: ${{ secrets.YC_SERVICE_ACCOUNT_ID }}
           revision-env: |
             WEBHOOK=${{ secrets.TG_BOT_WEBHOOK }}
-#            TOKEN=${{ secrets.TG_BOT_TOKEN }}
           revision-secrets: |
             token=${{ secrets.YC_LOCKBOX_SECRET_ID }}/${{ secrets.YC_LOCKBOX_SECRET_VERSION_ID }}/${{ secrets.YC_LOCKBOX_SECRET_KEY }}
           revision-cores: 1
