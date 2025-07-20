@@ -17,11 +17,8 @@ jobs:
       - name: Install a version from a specified version file
         uses: astral-sh/ruff-action@v3
         with:
-          version-file: ./pyproject.toml"
-          src: >-
-            ./common/
-            ./src/
-            ./main.py
+          version-file: "./pyproject.toml"
+          src: "."
       - uses: astral-sh/ruff-action@v3
       - run: ruff check common
       - run: ruff format --check
