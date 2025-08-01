@@ -2,7 +2,7 @@ FROM python:3.11-slim
 
 # Set the working directory
 WORKDIR /code
-
+ENV UV_PROJECT_ENVIRONMENT=/usr/local
 # Install poetry
 RUN pip install uv
 
@@ -10,9 +10,9 @@ RUN pip install uv
 COPY pyproject.toml uv.lock ./
 
 # Install dependencies
-RUN uv sync --frozen --no-install-project --no-dev
-ENV PATH="/code/.venv/bin:$PATH"
-ENV UV_PROJECT_ENVIRONMENT=/usr/local
+RUN uv sync --locked --no-dev
+#ENV PATH="/code/.venv/bin:$PATH"
+
 
 COPY ./main.py /code
 
