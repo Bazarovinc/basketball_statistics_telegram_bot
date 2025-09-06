@@ -78,6 +78,7 @@ POSITIVE_KPI_COLOR: Final[str] = _RED
 NEGATIVE_KPI_COLOR: Final[str] = _BLUE
 KPI_TITLE: Final[str] = "КПИ (коэффициент полезности игрока)"
 
+
 IMAGE_TYPE: Final[str] = "png"
 IMAGE_WIDTH: Final[int] = 1800
 IMAGE_HEIGHT: Final[int] = 1200
@@ -87,3 +88,6 @@ BAR_WIDTH_3_BARS: Final[float] = 0.3
 
 BAR_TEXT_HA: Final[str] = "center"
 BAR_TEXT_VA: Final[str] = "bottom"
+
+MEAN_KPI_LABEL: Final[str] = "Средний KPI: {mean_value:.2f}"
+MEAN_POINTS_LABEL: Final[str] = "Среднее число набираемых очков: {mean_value:.2f}"

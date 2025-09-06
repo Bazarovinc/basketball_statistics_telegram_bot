@@ -1,6 +1,6 @@
 [project]
 name = "baskteball-statistics-telegram-bot"
-version = "1.0.2"
+version = "1.0.3"
 description = "Telegram bot for parsing amateuer basketball leags (MLBL, ABL, BCL) and use it for analyzies"
 authors = [ "Nikita Veselenko <nikvesel@mail.ru>",]
 requires-python = ">=3.11"
@@ -10,9 +10,12 @@ dependencies = [ "aenum>=3.1.15", "beautifulsoup4>=4.13.3", "dependency-injector
 dev = [ "ruff>=0.12.4", "toml>=0.10.2",]
 
 [tool.ruff]
+indent-width = 4
 line-length = 120
-exclude = [ "__init__.py",]
 
 [tool.ruff.lint]
 select = [ "E", "F", "UP", "B", "SIM", "ANN", "A", "PL", "ASYNC", "DTZ", "FIX", "INT", "ICN", "LOG", "G", "INP", "PIE", "PT", "Q", "SIM", "TC", "ARG", "N", "W", "UP", "TRY", "I",]
 ignore = [ "ANN401", "PLR0913", "FIX002", "FIX001", "TRY003", "N805", "INP001", "PT006", "PT011", "PIE804", "B905", "DTZ007", "N818",]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 15

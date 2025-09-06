@@ -25,6 +25,8 @@ from src.constants import (
     IMAGE_TYPE,
     IMAGE_WIDTH,
     KPI_TITLE,
+    MEAN_KPI_LABEL,
+    MEAN_POINTS_LABEL,
     NEGATIVE_KPI_COLOR,
     OFFENCE_REBOUNDS_COLOR,
     OFFENCE_REBOUNDS_NAME,
@@ -173,17 +175,45 @@ class MatplotlibGraphicsPresenter(MultiplyDataPresenter):
         self._plot_grouped_bars(ax, data, groups, bar_width, fontsize, rotation)
         return self._draw_statistic(ax, title)
 
-    def _draw_single_bar(self, data: DataFrame, y_name: str, color: str, title: str) -> bytes:
+    def _draw_single_bar(
+        self, data: DataFrame, y_name: str, color: str, title: str, mean_label: str = "Среднее: {mean_value:.2f}"
+    ) -> bytes:
+        """Отрисовка одиночного столбца с линией среднего значения."""
         fig, ax = self._setup_axes(data)
         bars = ax.bar(data["game_info"], data[y_name], color=color)
         self._add_labels(ax, bars, np.arange(len(data)), FONTSIZE)
+
+        # Добавление пунктирной линии среднего значения
+        mean_value = data[y_name].mean()
+
+        ax.axhline(
+            y=mean_value,
+            color="blue",
+            linestyle="--",
+            linewidth=2,
+            alpha=0.8,
+            label=mean_label.format(mean_value=mean_value),
+        )
         return self._draw_statistic(ax, title)
 
     def _draw_kpi_graphic(self, data: DataFrame) -> bytes:
+        """Отрисовка KPI с линией среднего значения."""
         fig, ax = self._setup_axes(data)
         colors = [POSITIVE_KPI_COLOR if kpi > 0 else NEGATIVE_KPI_COLOR for kpi in data["kpi"]]
         bars = ax.bar(data["game_info"], data["kpi"], color=colors)
         self._add_labels(ax, bars, np.arange(len(data)), FONTSIZE)
+
+        # Добавление пунктирной линии среднего значения KPI
+        mean_kpi = data["kpi"].mean()
+        ax.axhline(
+            y=mean_kpi,
+            color="green",
+            linestyle="--",
+            linewidth=2,
+            alpha=0.8,
+            label=MEAN_KPI_LABEL.format(mean_value=mean_kpi),
+        )
+
         return self._draw_statistic(ax, KPI_TITLE)
 
     @staticmethod
@@ -228,7 +258,9 @@ class MatplotlibGraphicsPresenter(MultiplyDataPresenter):
         return (
             (self._draw_shots_and_points(converted_data), SHOTS_TITLE),
             (
-                self._draw_single_bar(converted_data, "total_points", TOTAL_SCORE_COLOR, TOTAL_SCORE_TITLE),
+                self._draw_single_bar(
+                    converted_data, "total_points", TOTAL_SCORE_COLOR, TOTAL_SCORE_TITLE, MEAN_POINTS_LABEL
+                ),
                 TOTAL_SCORE_TITLE,
             ),
             (
