@@ -4,7 +4,7 @@ from pydantic import BaseModel, ConfigDict
 
 
 class BaseSchema(BaseModel):
-    model_config = ConfigDict(from_attributes=True, populate_by_name=True)
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True, arbitrary_types_allowed=True)
 
 
 Schema = TypeVar("Schema", bound=BaseSchema)

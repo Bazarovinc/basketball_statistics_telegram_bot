@@ -96,7 +96,7 @@ class MatplotlibGraphicsPresenter(MultiplyDataPresenter):
         groups: tuple[tuple, ...],
         bar_width: float,
         fontsize: float,
-        rotation: int = None,
+        rotation: int | None = None,
     ) -> None:
         """Отрисовка сгруппированных столбцов."""
         x = np.arange(len(data))
@@ -107,7 +107,9 @@ class MatplotlibGraphicsPresenter(MultiplyDataPresenter):
             self._add_labels(ax, bars, pos, fontsize, rotation)
 
     @staticmethod
-    def _add_labels(ax: Axes, bars: BarContainer, positions: np.ndarray, fontsize: float, rotation: int = None) -> None:
+    def _add_labels(
+        ax: Axes, bars: BarContainer, positions: np.ndarray, fontsize: float, rotation: int | None = None
+    ) -> None:
         """Добавление текстовых меток над столбцами."""
         for bar, pos in zip(bars, positions):
             height = bar.get_height()
@@ -169,7 +171,7 @@ class MatplotlibGraphicsPresenter(MultiplyDataPresenter):
         title: str,
         bar_width: float = 0.2,
         fontsize: float = FONTSIZE,
-        rotation: int = None,
+        rotation: int | None = None,
     ) -> bytes:
         fig, ax = self._setup_axes(data)
         self._plot_grouped_bars(ax, data, groups, bar_width, fontsize, rotation)

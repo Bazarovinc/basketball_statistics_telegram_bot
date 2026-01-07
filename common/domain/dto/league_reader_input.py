@@ -22,7 +22,7 @@ class LeagueReaderInputSchema(BaseSchema):
 
     @model_validator(mode="after")
     def validate_league(self) -> "LeagueReaderInputSchema":
-        if self._host not in self.player_url.host:
+        if self.player_url.host and self._host not in self.player_url.host:
             raise ValueError("Хост player_url не совпадает с хостом лиги")
         return self
 

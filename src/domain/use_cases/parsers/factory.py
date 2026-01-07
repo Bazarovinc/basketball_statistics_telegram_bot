@@ -5,7 +5,7 @@ from src.domain.use_cases.parsers.interface import LeagueParser
 
 class ParserFactory:
     def __init__(self, parsers: dict[LeagueTypeEnum, LeagueParser]) -> None:
-        self._parsers = parsers
+        self._parsers: dict[LeagueTypeEnum, LeagueParser] = parsers
 
     def get_fast_statistics_parser(self, data_from_user: LeagueUrlsUserInputSchema) -> LeagueParser:
         return self._parsers.get(data_from_user.league_type)

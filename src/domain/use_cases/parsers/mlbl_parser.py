@@ -13,8 +13,10 @@ from src.domain.use_cases.parsers.interface import LeagueParser
 class MLBLParser(LeagueParser[MLBLInputBaseSchema]):
     input_schema = MLBLInputBaseSchema
 
-    player_profile_address: str | AnyHttpUrl = MLBL_PLAYER_PROFILE_ADDRESS
-    player_stats_address: str | AnyHttpUrl = MLBL_PLAYER_STATS_ADDRESS
+    player_profile_address_template: str = MLBL_PLAYER_PROFILE_ADDRESS
+    player_stats_address_template: str = MLBL_PLAYER_STATS_ADDRESS
+    player_profile_address: AnyHttpUrl
+    player_stats_address: AnyHttpUrl
     # player_team_info_address: str | AnyHttpUrl = PLAYER_TEAM_INFO_ADDRESS
     # team_games_calendar_address: str | AnyHttpUrl = TEAM_GAMES_CALENDAR_ADDRESS
     # game_statistic_address: str | AnyHttpUrl = GAME_STATISTIC_ADDRESS
@@ -39,9 +41,13 @@ class MLBLParser(LeagueParser[MLBLInputBaseSchema]):
 
     def _set_player_addresses_variables(self, data_from_user: MLBLInputBaseSchema) -> None:
         logger.info("Формирование URL-адресов для получения данных по игроку")
-        self.player_profile_address = AnyHttpUrl(self.player_profile_address.format(player_id=data_from_user.player_id))
+        self.player_profile_address = AnyHttpUrl(
+            self.player_profile_address_template.format(player_id=data_from_user.player_id)
+        )
         self.player_stats_address = AnyHttpUrl(
-            self.player_stats_address.format(player_id=data_from_user.player_id, comp_id=data_from_user.player_comp_id)
+            self.player_stats_address_template.format(
+                player_id=data_from_user.player_id, comp_id=data_from_user.player_comp_id
+            )
         )
 
     # def _set_team_addresses_variables(self, data_from_user: MLBLInputBaseSchema) -> None:

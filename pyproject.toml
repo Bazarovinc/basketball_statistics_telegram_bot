@@ -7,7 +7,11 @@ requires-python = ">=3.11"
 dependencies = [ "aenum>=3.1.15", "beautifulsoup4>=4.13.3", "dependency-injector>=4.46.0", "fastapi>=0.115.12", "httpx>=0.28.1", "loguru>=0.7.3", "lxml>=5.3.1", "matplotlib>=3.10.1", "numpy>=2.2.4", "pandas>=2.2.3", "pydantic>=2.11.1", "pydantic-settings>=2.8.1", "python-telegram-bot>=22.0", "uvicorn>=0.34.0",]
 
 [dependency-groups]
-dev = [ "ruff>=0.12.4", "toml>=0.10.2",]
+dev = [
+ "ruff>=0.12.4",
+ "toml>=0.10.2",
+ "ty>=0.0.6",
+]
 
 [tool.ruff]
 indent-width = 4
