@@ -10,8 +10,7 @@ from common.domain.dto.statistics_presenter import (
     StatisticsPresenterBaseSchema,
 )
 from common.utils.date_parser import parse_date_from_timestamp
-from src.constants import MAX_FAST_STATISTICS_GAMES_COUNT
-from src.constants.fields import FIELDS_TO_ZERO
+from src.constants import FIELDS_TO_ZERO, MAX_FAST_STATISTICS_GAMES_COUNT
 from src.constants.templates import GAME_INFO_TEMPLATE
 
 

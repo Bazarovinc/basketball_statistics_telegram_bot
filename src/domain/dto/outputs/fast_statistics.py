@@ -1,8 +1,7 @@
 from common.domain.dto import BaseSchema
-from common.domain.dto.league_reader_input import LeagueTypeEnum
+from common.domain.dto.statistics_presenter import PlayerStatisticsPresenterBaseSchema
 
 
 class FastStatisticsOutputSchema(BaseSchema):
-    league: LeagueTypeEnum = LeagueTypeEnum.MLBL
     images: tuple[tuple[bytes, str], ...]
-    username: str
+    fast_statistics: PlayerStatisticsPresenterBaseSchema

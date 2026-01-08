@@ -7,10 +7,12 @@ from telegram import InputMediaPhoto, Update
 from telegram.ext import ContextTypes, ConversationHandler
 
 from common.exceptions.parsers_exceptions import ServerNotAvailableException, URLValidationException
+from src.constants import FAST_STATISTICS_TEMPLATE_FIELDS
 from src.constants.telegram_templates import (
     BAD_MESSAGE_REPLY_MESSAGE,
     BAD_URL_ERROR_MESSAGE,
     FAST_STATISTICS_RESULT_MESSAGE,
+    FAST_STATISTICS_TOTAL_TEMPLATE,
     LEAGUE_SERVER_ERROR_MESSAGE,
     NOT_REPLY_MESSAGE,
     NOT_URL_ERROR_MESSAGE,
@@ -104,11 +106,22 @@ async def get_fast_statistics_result(
         *(
             context.bot.send_message(
                 update.effective_message.chat_id,
-                text=FAST_STATISTICS_RESULT_MESSAGE.format(username=result.username, league=result.league.value),
+                text=FAST_STATISTICS_RESULT_MESSAGE.format(
+                    username=result.fast_statistics.username, league=result.fast_statistics.league
+                ),
                 parse_mode=PARSE_MODE,
             ),
             context.bot.send_media_group(update.effective_message.chat_id, images),
         )
+    )
+    (
+        await context.bot.send_message(
+            update.effective_message.chat_id,
+            parse_mode=PARSE_MODE,
+            text=FAST_STATISTICS_TOTAL_TEMPLATE.format(
+                **result.fast_statistics.model_dump(include=FAST_STATISTICS_TEMPLATE_FIELDS)
+            ),
+        ),
     )
     await delete_task
     return ConversationHandler.END

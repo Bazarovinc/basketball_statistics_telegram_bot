@@ -1,6 +1,8 @@
-from datetime import datetime
+from datetime import datetime, timedelta
+from functools import cached_property
 
-from pydantic import AliasPath, Field
+from pydantic import AliasPath, Field, computed_field
+from typing_extensions import override
 
 from common.domain.dto import BaseSchema
 from common.domain.dto.league_reader_input import LeagueTypeEnum
@@ -38,6 +40,12 @@ class ABLGameStatisticsSchema(StatisticsPresenterBaseSchema):
     plus_minus: int | None
     is_start: bool | None = None
     kpi: int | None = Field(..., alias="player_efficiency")
+
+    @override
+    @computed_field
+    @cached_property
+    def played_time_seconds(self) -> timedelta:
+        return timedelta(seconds=self.played_time if self.played_time else 0)
 
 
 class ABLPlayerFastStatisticsResponseSchema(PlayerShortInfoBaseSchema):

@@ -23,7 +23,5 @@ class FastStatisticsGetter:
             logger.error(error)
             raise URLValidationException from error
         return FastStatisticsOutputSchema(
-            images=self._presenter(player_stats.statistics_per_game),
-            username=player_stats.player_info.username,
-            league=player_stats.league,
+            images=self._presenter(player_stats.statistics_per_game), fast_statistics=player_stats
         )

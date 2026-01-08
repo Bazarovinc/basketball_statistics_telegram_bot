@@ -104,3 +104,30 @@ CANCEL_BUTTON_CALLBACK: Final[str] = "back"
 FAST_STATISTICS_RESULT_MESSAGE: Final[str] = (
     "📊 <b>Статистика игрока {username} в лиге 🏀{league}</b>\n\n⬇️ <i>Ниже представлены подробные данные</i> ⬇️"
 )
+FAST_STATISTICS_TOTAL_TEMPLATE = """<b>{username}</b>
+<code>{league} | Игр: {total_games}</code>
+
+<b>СТАТИСТИКА ИГРОКА:</b>
+<pre>
++---+---------+---------+
+|   |  Всего  | За игру |
++---+---------+---------+
+|О  | {total_points:>7} | {mean_total_points:>7} |
+|ШБ | {total_points_1:>3}/{total_shots_1:<3} | {percent_shots_1:>6}% |
+|2х | {total_points_2:>3}/{total_shots_2:<3} | {percent_shots_2:>6}% |
+|3х | {total_points_3:>3}/{total_shots_3:<3} | {percent_shots_3:>6}% |
+|ПБ | {total_rebounds:>7} | {mean_rebounds:>7} |
+|СЩ | {total_defence_rebounds:>7} | {mean_defence_rebounds:>7} |
+|ЧЩ | {total_offence_rebounds:>7} | {mean_offence_rebounds:>7} |
+|ГП | {total_assists:>7} | {mean_assists:>7} |
+|ПХ | {total_steals:>7} | {mean_steals:>7} |
+|БШ | {total_blocks:>7} | {mean_blocks:>7} |
+|ПТ | {total_turnovers:>7} | {mean_turnovers:>7} |
+|Ф  | {total_fouls:>7} | {mean_fouls:>7} |
+|ФС | {total_opponent_fouls:>7} | {mean_opponent_fouls:>7} |
+|+/-| {total_plus_minus:>7} | {mean_plus_minus:>7} |
+|KPI| {total_kpi:>7} | {mean_kpi:>7} |
+|5  | {total_start:>7} |         |
+|СВ | {total_played_time:>7} | {mean_played_time:>7} |
++---+---------+---------+
+</pre>"""

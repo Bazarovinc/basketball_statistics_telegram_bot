@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import TypeVar
+from typing import Self, TypeVar
 
 from pydantic import AnyHttpUrl, model_validator
 
@@ -11,6 +11,9 @@ class LeagueTypeEnum(Enum):
     ABL = "ABL"
     BCL = "ЛЧБ"
 
+    def __str__(self) -> str:
+        return self.value
+
 
 class LeagueReaderInputSchema(BaseSchema):
     _host: str
@@ -21,7 +24,7 @@ class LeagueReaderInputSchema(BaseSchema):
     team_id: int | str | None = None
 
     @model_validator(mode="after")
-    def validate_league(self) -> "LeagueReaderInputSchema":
+    def validate_league(self) -> Self:
         if self._host not in self.player_url.host:
             raise ValueError("Хост player_url не совпадает с хостом лиги")
         return self

@@ -4,6 +4,7 @@ from typing import Generic
 from common.domain.dto.league_reader_input import LeagueInputSchema, LeagueReaderInputSchema
 from common.domain.dto.statistics_presenter import PlayerStatisticsPresenterSchema
 from common.getaways.league_reader import LeagueReaderInterface
+from src.domain.dto.user_inputs.league_urls import LeagueUrlsUserInputSchema
 
 
 class LeagueParser(ABC, Generic[LeagueInputSchema]):
@@ -20,5 +21,5 @@ class LeagueParser(ABC, Generic[LeagueInputSchema]):
         return self.input_schema(**data.model_dump())
 
     @abstractmethod
-    async def get_fast_statistics(self, data_from_user: LeagueInputSchema) -> PlayerStatisticsPresenterSchema:
+    async def get_fast_statistics(self, data_from_user: LeagueUrlsUserInputSchema) -> PlayerStatisticsPresenterSchema:
         raise NotImplementedError

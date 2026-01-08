@@ -4,7 +4,7 @@ from pydantic import Field, field_validator, model_validator
 
 from common.domain.dto import BaseSchema
 from common.utils.date_parser import parse_date_from_timestamp
-from src.constants.fields import FIELDS_TO_ZERO
+from src.constants import FIELDS_TO_ZERO
 from src.enums import MLBLGameStatusEnum
 
 
