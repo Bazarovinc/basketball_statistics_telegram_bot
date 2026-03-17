@@ -16,12 +16,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Install a version from a specified version file
+      - name: Install Ruff from pyproject.toml
         uses: astral-sh/ruff-action@v3
         with:
           version-file: ./pyproject.toml
-      - run: ruff check
-      - run: ruff format --check
+      - name: Lint with Ruff (rules from pyproject.toml)
+        run: ruff check . --config pyproject.toml
+      - name: Check format with Ruff (rules from pyproject.toml)
+        run: ruff format --check . --config pyproject.toml
   deploy:
     runs-on: ubuntu-latest
     needs: lint

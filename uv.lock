@@ -83,7 +83,7 @@ requires-dist = [
 ]
 
 [package.metadata.requires-dev]
-dev = [{ name = "ruff", specifier = ">=0.12.4" }]
+dev = [{ name = "ruff", specifier = "==0.12.4" }]
 
 [[package]]
 name = "beautifulsoup4"
