@@ -149,3 +149,6 @@ es_data
 trash
 trash/*.py
 trash/main.py
+t.py
+t1.py
+*.html

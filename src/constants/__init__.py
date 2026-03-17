@@ -86,7 +86,7 @@ from .leagues_addresses import (
     MLBL_TEAM_PATH_PARAM,
 )
 from .logs_templates import USER_COMMAND_CALL
-from .others import MAX_FAST_STATISTICS_GAMES_COUNT
+from .others import MATCH_TABLE_KEYS, MAX_FAST_STATISTICS_GAMES_COUNT, TELEGRAM_TIMEOUT
 from .telegram_templates import (
     BAD_MESSAGE_REPLY_MESSAGE,
     CANCEL_BUTTON,
@@ -245,4 +245,6 @@ __all__ = [
     "FAST_STATISTICS_TOTAL_TEMPLATE",
     "FAST_STATISTICS_TEMPLATE_FIELDS",
     "FIELDS_TO_ZERO",
+    "TELEGRAM_TIMEOUT",
+    "MATCH_TABLE_KEYS",
 ]

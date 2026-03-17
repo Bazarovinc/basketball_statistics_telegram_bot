@@ -39,6 +39,6 @@ ABL_GAME_USERS_STATISTICS_ADDRESS: Final[str] = (
 
 # BCL
 BCL_PLAYER_PROFILE_EXAMPLE_ADDRESS: Final[AnyHttpUrl] = AnyHttpUrl(
-    "https://basketball.businesschampions.ru/season-29/players/5687"
+    "https://basketball.businesschampions.ru/osen-2025/player/944061/"
 )
 BCL_HOST: Final[str] = "basketball.businesschampions.ru"

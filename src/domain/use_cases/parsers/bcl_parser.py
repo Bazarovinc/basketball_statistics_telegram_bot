@@ -4,10 +4,12 @@ from loguru import logger
 from common.exceptions.parsers_exceptions import ServerNotAvailableException
 from src.domain.dto.leagues_data.bcl.fast_statistics import (
     BCLFastStatisticsSchema,
-    BCLPlayerFastStatisticsResponseSchema,
 )
 from src.domain.dto.leagues_data.bcl.reader_input import BCLInputBaseSchema
 from src.domain.use_cases.parsers.interface import LeagueParser
+from src.utils import parse_matches_table, parse_player_info
+
+# Порядок колонок в таблице «Матчи» на странице игрока (актуальный HTML)
 
 
 class BCLParser(LeagueParser[BCLInputBaseSchema]):
@@ -20,24 +22,6 @@ class BCLParser(LeagueParser[BCLInputBaseSchema]):
             logger.error("Данный от лиги не получены")
             raise ServerNotAvailableException()
         soup = BeautifulSoup(html, "html.parser")
-        sections = soup.findAll("section")
-        game_statistics: list[dict] = []
-        player_info: BCLPlayerFastStatisticsResponseSchema | None = None
-        games_count: int = 0
-        for i, section in enumerate(sections):
-            header = section.find("header")
-            if header and i == 1:
-                last_name, first_name = header.text.split()
-                player_info = BCLPlayerFastStatisticsResponseSchema(last_name=last_name, first_name=first_name)
-            if header and header.text == "Статистика":
-                table = section.find("table")
-                names = (th.text for th in table.find("thead").find_all("th"))
-                values = (td.text for td in table.find("tbody").find_all("td"))
-                stats = {key: value for key, value in zip(names, values)}
-                games_count = int(stats.get("Игр"))
-            if header and header.text == "Матчи":
-                table = section.find("table")
-                names = ((th.text for th in table.find("thead").find_all("th")) for _ in range(games_count))
-                values = (td.text for td in table.find("tbody").find_all("td"))
-                game_statistics = [{key: value for key, value in zip(i, values)} for i in names]
+        player_info = parse_player_info(soup)
+        game_statistics = parse_matches_table(soup)
         return BCLFastStatisticsSchema(player_info=player_info, statistics_per_game=game_statistics)

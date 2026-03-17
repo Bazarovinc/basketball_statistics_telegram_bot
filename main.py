@@ -4,6 +4,7 @@ from loguru import logger
 from telegram import Update
 from telegram.ext import Application
 
+from src.constants import TELEGRAM_TIMEOUT
 from src.containers.use_cases import UseCasesContainer
 from src.controllers.telegram_bot.utils import get_handlers
 from src.controllers.telegram_bot.utils.init_handlers import setup_commands
@@ -38,7 +39,11 @@ async def on_startup() -> None:
     # Установка вебхука
     logger.info("Settings")
     logger.info(app_settings.model_dump_json(indent=4))
-    if await application.bot.set_webhook(app_settings.telegram.webhook.unicode_string() + "webhook"):
+    if await application.bot.set_webhook(
+        app_settings.telegram.webhook.unicode_string() + "webhook",
+        read_timeout=TELEGRAM_TIMEOUT,
+        write_timeout=TELEGRAM_TIMEOUT,
+    ):
         await application.initialize()
         await setup_commands(application)
         logger.info("Webhook set")

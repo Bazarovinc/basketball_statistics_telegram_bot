@@ -1,6 +1,6 @@
 [project]
 name = "baskteball-statistics-telegram-bot"
-version = "1.1.0"
+version = "1.1.1"
 description = "Telegram bot for parsing amateuer basketball leags (MLBL, ABL, BCL) and use it for analyzies"
 authors = [ "Nikita Veselenko <nikvesel@mail.ru>",]
 requires-python = ">=3.11"
@@ -14,6 +14,7 @@ dev = [
 [tool.ruff]
 indent-width = 4
 line-length = 120
+exclude = ["t.py", "t1.py"]
 
 [tool.ruff.lint]
 select = [ "E", "F", "UP", "B", "SIM", "ANN", "A", "PL", "ASYNC", "DTZ", "FIX", "INT", "ICN", "LOG", "G", "INP", "PIE", "PT", "Q", "SIM", "TC", "ARG", "N", "W", "UP", "TRY", "I",]
