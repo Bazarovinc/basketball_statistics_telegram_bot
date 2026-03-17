@@ -7,7 +7,6 @@ from matplotlib.axes import Axes
 from matplotlib.container import BarContainer
 from pandas import DataFrame
 
-from common.domain.dto.statistics_presenter import StatisticsPresenterSchema
 from src.constants import (
     ASSISTS_COLOR,
     ASSISTS_NAME,
@@ -53,7 +52,8 @@ from src.constants import (
     TURNOVERS_COLOR,
     TURNOVERS_NAME,
 )
-from src.presenters.interfaces import MultiplyDataPresenter
+from src.core.domain import StatisticsPresenterSchema
+from src.domain.interfaces.presenters.statistics import MultiplyDataPresenter
 
 MIN_GROUPED_BARS: int = 2
 

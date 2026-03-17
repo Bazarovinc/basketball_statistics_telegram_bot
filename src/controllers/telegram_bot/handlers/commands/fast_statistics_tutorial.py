@@ -8,7 +8,7 @@ from src.constants import (
     FAST_STATISTICS_TUTORIAL_COMMAND_MESSAGE,
     USER_COMMAND_CALL,
 )
-from src.containers.use_cases import UseCasesContainer
+from src.containers.app import UseCasesContainer
 from src.controllers.telegram_bot.states import TUTORIAL_START_ROUTES
 from src.controllers.telegram_bot.utils import generate_cancel_button, generate_leagues_keyboard
 from src.domain.use_cases.core_use_cases.leagues_service import LeaguesService

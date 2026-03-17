@@ -1,7 +1,7 @@
 from pydantic import AnyHttpUrl, model_validator
 
-from common.domain.dto.league_reader_input import LeagueReaderInputSchema, LeagueTypeEnum
 from src.constants import ABL_HOST, ABL_PLAYER_PATH_PARAM
+from src.core.domain.dto.league_reader_input import LeagueReaderInputSchema, LeagueTypeEnum
 
 
 class ABLInputBaseSchema(LeagueReaderInputSchema):

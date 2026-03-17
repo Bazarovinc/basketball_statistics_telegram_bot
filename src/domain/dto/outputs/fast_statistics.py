@@ -1,5 +1,4 @@
-from common.domain.dto import BaseSchema
-from common.domain.dto.statistics_presenter import PlayerStatisticsPresenterBaseSchema
+from src.core.domain.dto import BaseSchema, PlayerStatisticsPresenterBaseSchema
 
 
 class FastStatisticsOutputSchema(BaseSchema):

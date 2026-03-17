@@ -2,10 +2,9 @@ from datetime import datetime
 
 from pydantic import Field, field_validator, model_validator
 
-from common.domain.dto import BaseSchema
-from common.utils.date_parser import parse_date_from_timestamp
 from src.constants import FIELDS_TO_ZERO
-from src.enums import MLBLGameStatusEnum
+from src.core.domain.dto import BaseSchema
+from src.domain.enums import MLBLGameStatusEnum
 
 
 class MLBLGameResponseSchema(BaseSchema):
@@ -23,12 +22,6 @@ class MLBLGameResponseSchema(BaseSchema):
     competition_type: str = Field(..., alias="CompNameRu")
     division_name: str = Field(..., alias="LeagueNameRu")
     division_season: str = Field(..., alias="LeagueShortNameRu")
-
-    @field_validator("game_date", mode="before")
-    def validate_datetime(cls, value: str | datetime) -> datetime:
-        if isinstance(value, str):
-            return parse_date_from_timestamp(value)
-        return value
 
 
 class MLBLPlayerStatisticResponseSchema(BaseSchema):

@@ -1,45 +1,46 @@
 from datetime import datetime, timedelta
 from functools import cached_property
 
-from pydantic import AliasPath, Field, computed_field
+from pydantic import AliasChoices, AliasPath, Field, computed_field
 from typing_extensions import override
 
-from common.domain.dto import BaseSchema
-from common.domain.dto.league_reader_input import LeagueTypeEnum
-from common.domain.dto.statistics_presenter import (
+from src.constants import GAME_INFO_TEMPLATE
+from src.core.domain.dto import (
+    BaseSchema,
     PlayerShortInfoBaseSchema,
     PlayerStatisticsPresenterBaseSchema,
     StatisticsPresenterBaseSchema,
 )
-from src.constants import GAME_INFO_TEMPLATE
+from src.core.domain.dto.league_reader_input import LeagueTypeEnum
 
 
 class ABLGameStatisticsSchema(StatisticsPresenterBaseSchema):
     game_user_id: int
     game_info: str | None = None
     player_number: int | None = None
-    total_points: int | None = Field(..., alias="points")
-    points_1: int | None = Field(..., alias="free_throws_made")
-    shots_1: int | None = Field(..., alias="free_throw_attempts")
-    shots_1_percent: float | None = Field(..., alias="free_throw_percent")
-    points_2: int | None = Field(..., alias="two_points_made")
-    shots_2: int | None = Field(..., alias="two_point_attempts")
-    shots_2_percent: float | None = Field(..., alias="two_point_percent")
-    points_3: int | None = Field(..., alias="three_points_made")
-    shots_3: int | None = Field(..., alias="three_point_attempts")
-    shots_3_percent: float | None = Field(..., alias="three_point_percent")
-    assists: int | None
-    blocks: int | None
-    defence_rebounds: int | None = Field(..., alias="defensive_rebounds")
-    offence_rebounds: int | None = Field(..., alias="offensive_rebounds")
-    steals: int | None
-    turnovers: int | None
-    fouls: int | None = Field(..., alias="personal_fouls")
-    opponent_fouls: int | None = Field(..., alias="drawn_fouls")
+    total_points: int = Field(..., alias="points")
+    points_1: int = Field(..., alias="free_throws_made")
+    shots_1: int = Field(..., alias="free_throw_attempts")
+    shots_1_percent: float = Field(..., alias="free_throw_percent")
+    points_2: int = Field(..., alias="two_points_made")
+    shots_2: int = Field(..., alias="two_point_attempts")
+    shots_2_percent: float = Field(..., alias="two_point_percent")
+    points_3: int = Field(..., alias="three_points_made")
+    shots_3: int = Field(..., alias="three_point_attempts")
+    shots_3_percent: float = Field(..., alias="three_point_percent")
+    assists: int
+    blocks: int
+    defence_rebounds: int = Field(..., alias="defensive_rebounds")
+    offence_rebounds: int = Field(..., alias="offensive_rebounds")
+    steals: int
+    turnovers: int
+    fouls: int = Field(..., alias="personal_fouls")
+    opponent_fouls: int = Field(..., alias="drawn_fouls")
     played_time: int | None = Field(None, alias="game_time")
-    plus_minus: int | None
+    plus_minus: int
     is_start: bool | None = None
-    kpi: int | None = Field(..., alias="player_efficiency")
+    kpi: int = Field(..., alias="player_efficiency")
+    game_date: datetime | None = Field(None, exclude=True)
 
     @override
     @computed_field
@@ -72,7 +73,14 @@ class ABLFSGameInfoResponseSchema(BaseSchema):
 class ABLPlayerGameInfoResponseSchema(BaseSchema):
     id: int
     player_id: int = Field(..., validation_alias=AliasPath("team_user", "user", "id"))
-    player_number: int | None = Field(None, alias="number")
+    # Сначала номер из tournament_team_user (последний в JSON), при отсутствии — из team_user
+    player_number: int | None = Field(
+        None,
+        validation_alias=AliasChoices(
+            "number",
+            AliasPath("team_user", "number"),
+        ),
+    )
 
 
 class ABLFastStatisticsSchema(PlayerStatisticsPresenterBaseSchema):

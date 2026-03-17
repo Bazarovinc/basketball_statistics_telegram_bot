@@ -2,8 +2,6 @@ from typing import Final
 
 from pydantic import AnyHttpUrl
 
-from common.domain.dto import BaseSchema
-from common.domain.dto.league_reader_input import LeagueTypeEnum
 from src.constants import (
     ABL_HOST,
     ABL_PLAYER_PROFILE_EXAMPLE_ADDRESS,
@@ -28,6 +26,8 @@ from src.constants import (
     MLBL_PLAYER_PROFILE_EXAMPLE_ADDRESS,
     MLBL_PLAYER_PROFILE_SCREENSHOT,
 )
+from src.core.domain.dto import BaseSchema
+from src.core.domain.dto.league_reader_input import LeagueTypeEnum
 
 
 class ScreenshotSchema(BaseSchema):
@@ -56,7 +56,7 @@ class LeagueBaseSchema(BaseSchema):
 
     @property
     def name(self) -> str:
-        return self.league_type.value
+        return self.league_type
 
 
 ID_GENERATOR = iter(range(10))

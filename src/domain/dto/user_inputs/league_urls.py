@@ -1,7 +1,7 @@
 from pydantic import AnyHttpUrl
 
-from common.domain.dto import BaseSchema
-from common.domain.dto.league_reader_input import LeagueTypeEnum
+from src.core.domain.dto import BaseSchema
+from src.core.domain.dto.league_reader_input import LeagueTypeEnum
 
 
 class LeagueUrlsUserInputSchema(BaseSchema):

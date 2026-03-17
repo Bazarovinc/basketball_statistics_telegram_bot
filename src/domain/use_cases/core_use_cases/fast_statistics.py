@@ -1,12 +1,12 @@
 from loguru import logger
 from pydantic_core._pydantic_core import ValidationError
 
-from common.exceptions.parsers_exceptions import URLValidationException
+from src.core.exceptions.parsers_exceptions import URLValidationException
 from src.domain.dto.outputs.fast_statistics import FastStatisticsOutputSchema
 from src.domain.dto.user_inputs.league_urls import LeagueUrlsUserInputSchema
+from src.domain.interfaces.presenters.statistics import MultiplyDataPresenter
 from src.domain.use_cases.parsers.factory import ParserFactory
 from src.domain.use_cases.parsers.interface import LeagueParser  # noqa: TC001
-from src.presenters.interfaces import MultiplyDataPresenter
 
 
 class FastStatisticsGetter:

@@ -602,3 +602,126 @@
 `tournament_id` - id дивизиона/турнира (надо запрашивать ссылки при смене турниров)
 >[!info] Пример (GET)
 >https://ablforpeople.com/team/8402?seasonId=64&tournamentId=1578
+
+## Получение данных о сезонах игрока
+`https://mtgame.ru/api/v1/league_player/{local_player_id}/tournament_users/`
+`local_player_id` - локальное id игрока
+>[!info] Пример (GET)
+>https://mtgame.ru/api/v1/league_player/76755/tournament_users/
+
+Пример ответа:
+```json
+[
+  {
+    "active":true,
+    "conditional_disqualification":null,
+    "disqualification":null,
+    "disqualifications_count":0,
+    "games_count":4,
+    "id":391181,
+    "mvp_count":0,
+    "team_user":{
+      "id":184852,
+      "number":99,
+      "role":"member"
+    },
+    "tournament_team":{
+      "field_values":[ ],
+      "id":20050,
+      "logo":{
+        "id":8755275,
+        "path":"https://fs.mtgame.ru/IMG_6648.png"
+      },
+      "name":"Team Heroes",
+      "team":{
+        "id":11761,
+        "logo":{
+          "id":8755275,
+          "path":"https://fs.mtgame.ru/IMG_6648.png"
+        },
+        "name":"Team Heroes",
+        "sport":{
+          "id":3,
+          "is_hidden":false,
+          "name":"Баскетбол",
+          "name_en":null,
+          "parent_id":1
+        }
+      },
+      "tournament":{
+        "alias":"restdrop24",
+        "date":"2025-06-14",
+        "id":2494,
+        "name":"REST DROP",
+        "season":{
+          "id":64,
+          "name":"Сезон 2024/2025",
+          "status":"open"
+        },
+        "status":"closed"
+      }
+    }
+  },
+  {
+    "active":true,
+    "conditional_disqualification":null,
+    "disqualification":null,
+    "disqualifications_count":0,
+    "games_count":12,
+    "id":389968,
+    "mvp_count":0,
+    "team_user":{
+      "id":100736,
+      "number":99,
+      "role":"member"
+    },
+    "tournament_team":{
+      "field_values":[ ],
+      "id":20021,
+      "logo":{
+        "id":8755277,
+        "path":"https://fs.mtgame.ru/IMG_0635.png"
+      },
+      "name":"Team United",
+      "team":{
+        "id":5695,
+        "logo":{
+          "id":8755277,
+          "path":"https://fs.mtgame.ru/IMG_0635.png"
+        },
+        "name":"Team United",
+        "sport":{
+          "id":3,
+          "is_hidden":false,
+          "name":"Баскетбол",
+          "name_en":null,
+          "parent_id":1
+        }
+      },
+      "tournament":{
+        "alias":"restslam24",
+        "date":"2025-06-14",
+        "id":2492,
+        "name":"REST SLAM",
+        "season":{
+          "id":64,
+          "name":"Сезон 2024/2025",
+          "status":"open"
+        },
+        "status":"closed"
+      }
+    }
+  }
+]
+```
+# Получение данных о сыгранных играх команды
+`https://mtgame.ru/api/v1/tournament_season/{season_id}/games/?page=1&size=1000&team_id={team_id}`
+`season_id` - id сезона
+`team_id` - id команды
+>[!info] Пример (GET)
+>https://mtgame.ru/api/v1/tournament_season/64/games/?page=1&size=1000&team_id=11761
+
+Пример ответа:
+```json
+
+```

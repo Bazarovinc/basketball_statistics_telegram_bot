@@ -1,8 +1,8 @@
 from functools import cached_property
 
-from common.domain.dto.league_reader_input import LeagueTypeEnum
+from src.core.domain.dto.league_reader_input import LeagueTypeEnum
 from src.domain.dto.base.league import LEAGUES, LeagueBaseSchema
-from src.presenters.interfaces import LeagueInfoPresenterInterface
+from src.domain.interfaces.presenters.statistics import LeagueInfoPresenterInterface
 
 
 class LeagueInfoPresenter(LeagueInfoPresenterInterface):

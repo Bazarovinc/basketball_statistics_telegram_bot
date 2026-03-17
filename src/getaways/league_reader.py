@@ -1,7 +1,7 @@
 from httpx import AsyncClient, AsyncHTTPTransport, codes
 from loguru import logger
 
-from common.getaways.league_reader import LeagueReaderInterface
+from src.domain.interfaces.gateways.league_reader import LeagueReaderInterface
 
 
 class LeagueReader(LeagueReaderInterface):

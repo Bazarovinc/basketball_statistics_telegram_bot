@@ -1,4 +1,4 @@
-from common.domain.dto.league_reader_input import LeagueTypeEnum
+from src.core.domain.dto.league_reader_input import LeagueTypeEnum
 from src.domain.dto.user_inputs.league_urls import LeagueUrlsUserInputSchema
 from src.domain.use_cases.parsers.interface import LeagueParser
 

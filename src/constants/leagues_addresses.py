@@ -36,9 +36,14 @@ ABL_GAME_USERS_ADDRESS: Final[str] = "https://mtgame.ru/api/v1/tournament_game/{
 ABL_GAME_USERS_STATISTICS_ADDRESS: Final[str] = (
     "https://mtgame.ru/api/v1/tournament_basketball_game/{game_id}/user_statistic/"
 )
+ABL_PLAYER_SEASONS_ADDRESS: Final[str] = "https://mtgame.ru/api/v1/league_player/{player_id}/tournament_users/"
 
 # BCL
 BCL_PLAYER_PROFILE_EXAMPLE_ADDRESS: Final[AnyHttpUrl] = AnyHttpUrl(
     "https://basketball.businesschampions.ru/season-29/players/5687"
 )
 BCL_HOST: Final[str] = "basketball.businesschampions.ru"
+BCL_PLAYER_SEASON_GAMES_ADDRESS: Final[str] = (
+    "https://basketball.businesschampions.ru/season-{season_id}/players/{player_id}"
+)
+BCL_TEAM_ADDRESS: Final[str] = "https://basketball.businesschampions.ru/season-{season_id}/teams/{team_id}"

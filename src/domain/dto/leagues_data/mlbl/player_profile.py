@@ -2,8 +2,8 @@ from datetime import date, datetime
 
 from pydantic import Field, field_validator, model_validator
 
-from common.domain.dto.base import BaseSchema
-from src.enums import MLBLGenderEnum, PositionEnum
+from src.core.domain.dto.base import BaseSchema
+from src.domain.enums import MLBLGenderEnum, PositionEnum
 
 
 class MLBLPlayerProfileResponseSchema(BaseSchema):

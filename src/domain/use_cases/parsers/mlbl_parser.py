@@ -3,14 +3,15 @@ import asyncio
 from loguru import logger
 from pydantic import AnyHttpUrl
 
-from common.exceptions.parsers_exceptions import ServerNotAvailableException
 from src.constants import MLBL_PLAYER_PROFILE_ADDRESS, MLBL_PLAYER_STATS_ADDRESS
+from src.core.exceptions.parsers_exceptions import ServerNotAvailableException
 from src.domain.dto.leagues_data.mlbl.fast_statistics import MLBLFastStatisticsSchema
+from src.domain.dto.leagues_data.mlbl.full_statistics import MLBLFullStatisticsSchema
 from src.domain.dto.leagues_data.mlbl.reader_input import MLBLInputBaseSchema
 from src.domain.use_cases.parsers.interface import LeagueParser
 
 
-class MLBLParser(LeagueParser[MLBLInputBaseSchema]):
+class MLBLParser(LeagueParser[MLBLInputBaseSchema, MLBLFastStatisticsSchema, MLBLFullStatisticsSchema]):
     input_schema = MLBLInputBaseSchema
 
     player_profile_address: str | AnyHttpUrl = MLBL_PLAYER_PROFILE_ADDRESS
@@ -130,3 +131,6 @@ class MLBLParser(LeagueParser[MLBLInputBaseSchema]):
             raise ServerNotAvailableException()
         statistics["player_info"] = player_info
         return MLBLFastStatisticsSchema(**statistics)
+
+    async def get_full_statistics(self, data_from_user: MLBLInputBaseSchema) -> MLBLFullStatisticsSchema:
+        pass

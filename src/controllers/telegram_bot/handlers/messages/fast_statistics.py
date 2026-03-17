@@ -6,7 +6,6 @@ from pydantic import AnyHttpUrl, ValidationError
 from telegram import InputMediaPhoto, Update
 from telegram.ext import ContextTypes, ConversationHandler
 
-from common.exceptions.parsers_exceptions import ServerNotAvailableException, URLValidationException
 from src.constants import FAST_STATISTICS_TEMPLATE_FIELDS
 from src.constants.telegram_templates import (
     BAD_MESSAGE_REPLY_MESSAGE,
@@ -19,7 +18,8 @@ from src.constants.telegram_templates import (
     PARSE_MODE,
     WAITING_MESSAGE,
 )
-from src.containers.use_cases import UseCasesContainer
+from src.containers.app import UseCasesContainer
+from src.core.exceptions.parsers_exceptions import ServerNotAvailableException, URLValidationException
 from src.domain.dto.user_inputs.league_urls import LeagueUrlsUserInputSchema
 from src.domain.use_cases.core_use_cases.fast_statistics import FastStatisticsGetter
 from src.domain.use_cases.core_use_cases.leagues_service import LeaguesService

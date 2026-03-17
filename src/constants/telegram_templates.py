@@ -7,6 +7,7 @@ HELP_COMMAND_NAME: Final[str] = "help"
 INFO_COMMAND_NAME: Final[str] = "info"
 FAST_STATISTICS_COMMAND_NAME: Final[str] = "fast_statistics"
 FAST_STATISTICS_TUTORIAL_COMMAND_NAME: Final[str] = "fast_statistics_tutorial"
+ADD_PROFILE_COMMAND_NAME: Final[str] = "add_profile"
 
 
 START_COMMAND_INFO: Final[str] = "Запуск бота и приветственное сообщение"
@@ -14,13 +15,22 @@ HELP_COMMAND_INFO: Final[str] = "Вся информация о командах
 INFO_COMMAND_INFO: Final[str] = "О проекте и разработчиках"
 FAST_STATISTICS_INFO: Final[str] = "Получить графики статистики игрока"
 FAST_STATISTICS_TUTORIAL_INFO: Final[str] = "Как отправить ссылку на игрока"
+AGREEMENT_COMMAND_NAME: Final[str] = "agreement"
+AGREEMENT_COMMAND_INFO: Final[str] = "Согласие на обработку персональных данных"
+
+DELETE_PROFILE_COMMAND_NAME: Final[str] = "delete_profile"
+DELETE_PROFILE_COMMAND_INFO: Final[str] = "Удалить профиль и все данные"
+ADD_PROFILE_COMMAND_INFO: Final[str] = "Сохранить профиль игрока в базу"
 
 COMMANDS_INFO: Final[tuple[str, ...]] = (
     f"<b>📋 Доступные команды:</b>\n\n▫️/{START_COMMAND_NAME} - {START_COMMAND_INFO}",
     f"▫️/{HELP_COMMAND_NAME} - {HELP_COMMAND_INFO}",
     f"▫️/{INFO_COMMAND_NAME} - {INFO_COMMAND_INFO}",
+    f"▫️/{AGREEMENT_COMMAND_NAME} - {AGREEMENT_COMMAND_INFO}",
+    f"▫️/{DELETE_PROFILE_COMMAND_NAME} - {DELETE_PROFILE_COMMAND_INFO}",
     f"▫️/{FAST_STATISTICS_COMMAND_NAME} - {FAST_STATISTICS_INFO}",
     f"▫️/{FAST_STATISTICS_TUTORIAL_COMMAND_NAME} - {FAST_STATISTICS_TUTORIAL_INFO}",
+    f"▫️/{ADD_PROFILE_COMMAND_NAME} - {ADD_PROFILE_COMMAND_INFO}",
 )
 
 START_COMMAND_MESSAGE: Final[str] = (
@@ -40,6 +50,28 @@ INFO_COMMAND_MESSAGE: Final[str] = (
 FAST_STATISTICS_MESSAGE: Final[str] = (
     "🏀 <b>Выбери лигу для просмотра статистики</b>\n\n"
     "Чтобы получить свои данные, сначала укажи интересующую лигу из доступных вариантов:\n\n"
+)
+ADD_PROFILE_MESSAGE: Final[str] = (
+    "🏀 <b>Выбери лигу для сохранения профиля</b>\n\nУкажи лигу, в которой хочешь сохранить свой игровой профиль:\n\n"
+)
+ADD_PROFILE_SUCCESS_MESSAGE: Final[str] = (
+    "✅ <b>Профиль успешно сохранён</b>\n\nВаши данные по выбранной лиге сохранены в базу."
+)
+ADD_PROFILE_LOADING_MESSAGE: Final[str] = (
+    "⏳ <b>Ожидайте</b>, загрузка и сохранение данных могут занять некоторое время…"
+)
+ADD_PROFILE_NOT_REPLY_MESSAGE: Final[str] = (
+    "⚠️ <b>Ой, так не получится!</b>\n\n"
+    "Ты прислал ссылку обычным сообщением, а не <b>ответом</b> на инструкцию.\n\n"
+    f"Начни сначала 👉 /{ADD_PROFILE_COMMAND_NAME}"
+)
+USER_NOT_FOUND_MESSAGE: Final[str] = "❌ <b>Пользователь не найден</b>\n\nСначала запустите бота командой /start."
+USER_AGREEMENT_NOT_FOUND_MESSAGE: Final[str] = (
+    "❌ <b>Согласие на обработку данных не получено</b>\n\n"
+    f"Используйте команду /{AGREEMENT_COMMAND_NAME} для предоставления согласия."
+)
+PLAYER_PROFILE_ALREADY_SAVED_MESSAGE: Final[str] = (
+    "❌ <b>Профиль уже сохранён</b>\n\nВаш игровой профиль для этой лиги уже есть в базе."
 )
 
 
@@ -101,6 +133,37 @@ BAD_MESSAGE_REPLY_MESSAGE: Final[str] = (
 )
 CANCEL_BUTTON: Final[str] = "🔙Отмена"
 CANCEL_BUTTON_CALLBACK: Final[str] = "back"
+
+AGREEMENT_MESSAGE: Final[str] = (
+    "Согласие на обработку персональных данных (152-ФЗ)\n\n"
+    "Ознакомьтесь с документом и нажмите «✅ Согласен» для продолжения."
+)
+AGREEMENT_AGREE_BUTTON: Final[str] = "✅ Согласен"
+AGREEMENT_AGREE_CALLBACK: Final[str] = "agreement_agree"
+AGREEMENT_AGREED_MESSAGE: Final[str] = (
+    "✅ Спасибо! Ваше согласие на обработку персональных данных принято.\n\n"
+    "Теперь вам доступна вся функциональность бота."
+)
+AGREEMENT_ALREADY_GIVEN_MESSAGE: Final[str] = (
+    "✅ Согласие на обработку персональных данных уже получено.\n\nСпасибо! Вы можете продолжить пользоваться сервисом."
+)
+
+DELETE_PROFILE_WARNING_MESSAGE: Final[str] = (
+    "⚠️ <b>Удаление профиля</b>\n\n"
+    "Вы уверены, что хотите удалить свой профиль?\n\n"
+    "Будут безвозвратно удалены:\n"
+    "• Ваши персональные данные\n"
+    "• Согласие на обработку ПД\n"
+    "• Вся статистика игр и привязки к лигам\n\n"
+    "Это действие нельзя отменить."
+)
+DELETE_PROFILE_CONFIRM_BUTTON: Final[str] = "Да"
+DELETE_PROFILE_CONFIRM_CALLBACK: Final[str] = "delete_profile_confirm"
+DELETE_PROFILE_SUCCESS_MESSAGE: Final[str] = (
+    "✅ Ваш профиль и все связанные данные удалены.\n\n"
+    "Спасибо, что пользовались сервисом. Вы всегда можете начать заново командой /start."
+)
+
 FAST_STATISTICS_RESULT_MESSAGE: Final[str] = (
     "📊 <b>Статистика игрока {username} в лиге 🏀{league}</b>\n\n⬇️ <i>Ниже представлены подробные данные</i> ⬇️"
 )

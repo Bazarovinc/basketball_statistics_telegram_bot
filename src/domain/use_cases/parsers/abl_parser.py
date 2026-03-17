@@ -4,14 +4,15 @@ from typing import Any
 from loguru import logger
 from pydantic import TypeAdapter
 
-from common.exceptions.parsers_exceptions import ServerNotAvailableException
 from src.constants import (
     ABL_GAME_USERS_ADDRESS,
     ABL_GAME_USERS_STATISTICS_ADDRESS,
     ABL_PLAYED_GAMES_ADDRESS,
     ABL_PLAYER_PROFILE_ADDRESS,
+    ABL_PLAYER_SEASONS_ADDRESS,
     MAX_FAST_STATISTICS_GAMES_COUNT,
 )
+from src.core.exceptions.parsers_exceptions import ServerNotAvailableException
 from src.domain.dto.leagues_data.abl.fast_statistics import (
     ABLFastStatisticsSchema,
     ABLFSGameInfoResponseSchema,
@@ -19,19 +20,28 @@ from src.domain.dto.leagues_data.abl.fast_statistics import (
     ABLPlayerFastStatisticsResponseSchema,
     ABLPlayerGameInfoResponseSchema,
 )
+from src.domain.dto.leagues_data.abl.full_statistics import (
+    ABLFullStatisticsSchema,
+    ABLGameInfoSchema,
+    ABLPlayerProfileInfoSchema,
+    ABLTeamSeasonResponseSchema,
+)
 from src.domain.dto.leagues_data.abl.reader_input import ABLInputBaseSchema
 from src.domain.use_cases.parsers.interface import LeagueParser
+from src.utils import match_abl_player_statistics
+from src.utils.data_matching import build_abl_seasons_from_team_response, match_abl_full_player_games
 
 
-class ABLParser(LeagueParser[ABLInputBaseSchema]):
+class ABLParser(LeagueParser[ABLInputBaseSchema, ABLFastStatisticsSchema, ABLFullStatisticsSchema]):
     input_schema = ABLInputBaseSchema
     player_profile_address: str = ABL_PLAYER_PROFILE_ADDRESS
     played_games_address: str = ABL_PLAYED_GAMES_ADDRESS
     game_users_address: str = ABL_GAME_USERS_ADDRESS
     game_users_statistics_address: str = ABL_GAME_USERS_STATISTICS_ADDRESS
+    player_seasons_address: str = ABL_PLAYER_SEASONS_ADDRESS
 
     async def _get_player_games_statistics(
-        self, games_info: list[ABLFSGameInfoResponseSchema]
+        self, games_info: list[ABLFSGameInfoResponseSchema | ABLGameInfoSchema]
     ) -> tuple[tuple[Any, ...], tuple[Any, ...]]:
         players_info_tasks, players_statistics_tasks = [], []
         for game_info in games_info:
@@ -42,34 +52,6 @@ class ABLParser(LeagueParser[ABLInputBaseSchema]):
                 self._league_reader.get_data_json(self.game_users_statistics_address.format(game_id=game_info.id))
             )
         return await asyncio.gather(*(asyncio.gather(*players_info_tasks), asyncio.gather(*players_statistics_tasks)))
-
-    @staticmethod
-    def _match_player_statistics(
-        player_profile: ABLPlayerFastStatisticsResponseSchema,
-        games_info: list[ABLFSGameInfoResponseSchema],
-        games_players_info: tuple[list[ABLPlayerGameInfoResponseSchema], ...],
-        games_players_statistics: tuple[list[ABLGameStatisticsSchema], ...],
-    ) -> list[ABLGameStatisticsSchema]:
-        player_games_statistics: list[ABLGameStatisticsSchema] = []
-        for game_players_info, game_players_statistics, game_info in zip(
-            games_players_info, games_players_statistics, games_info
-        ):
-            need_player: ABLPlayerGameInfoResponseSchema | None = None
-            for player_info in game_players_info:
-                if not player_info:
-                    logger.error("Данные от лиги не получены")
-                    raise ServerNotAvailableException()
-                if player_info.player_id == player_profile.user_id:
-                    need_player = player_info
-                    break
-            for players_statistics in game_players_statistics:
-                if not players_statistics:
-                    logger.error("Данные от лиги не получены")
-                    raise ServerNotAvailableException()
-                if need_player.id == players_statistics.game_user_id:
-                    players_statistics.game_info = game_info.game_info
-                    player_games_statistics.append(players_statistics)
-        return player_games_statistics[::-1]
 
     async def get_fast_statistics(self, data_from_user: ABLInputBaseSchema) -> ABLFastStatisticsSchema:
         data_from_user = self._validate_input(data_from_user)
@@ -103,7 +85,50 @@ class ABLParser(LeagueParser[ABLInputBaseSchema]):
         )
         return ABLFastStatisticsSchema(
             player_info=player_profile,
-            statistics_per_game=self._match_player_statistics(
+            statistics_per_game=match_abl_player_statistics(
                 player_profile, games_info, games_players_info, games_players_statistics
             ),
         )
+
+    async def get_full_statistics(self, data_from_user: ABLInputBaseSchema) -> ABLFullStatisticsSchema:
+        data_from_user = self._validate_input(data_from_user)
+        player_profile_response, player_seasons_response = await asyncio.gather(
+            *(
+                self._league_reader.get_data_json(
+                    self.player_profile_address.format(player_id=data_from_user.player_id)
+                ),
+                self._league_reader.get_data_json(
+                    self.player_seasons_address.format(player_id=data_from_user.player_id)
+                ),
+            )
+        )
+        if not all((player_profile_response, player_seasons_response)):
+            logger.error("Данные от лиги не получены")
+            raise ServerNotAvailableException()
+        player_profile = ABLPlayerProfileInfoSchema(**player_profile_response)
+        player_seasons = TypeAdapter(list[ABLTeamSeasonResponseSchema]).validate_python(player_seasons_response)
+        parsed_seasons = build_abl_seasons_from_team_response(player_seasons)
+        tasks = [
+            self._league_reader.get_data_json(
+                self.played_games_address.format(
+                    player_id=player_profile.profile_id, season_id=season.league_seasons[0].external_season_id
+                )
+            )
+            for season in parsed_seasons
+        ]
+        full_games_info: list[ABLGameInfoSchema] = []
+        for games in asyncio.as_completed(tasks):
+            games_info = TypeAdapter(list[ABLGameInfoSchema]).validate_python(await games)
+            games_players_info_response, games_players_statistics_response = await self._get_player_games_statistics(
+                games_info
+            )
+            games_players_info = TypeAdapter(tuple[list[ABLPlayerGameInfoResponseSchema], ...]).validate_python(
+                games_players_info_response
+            )
+            games_players_statistics = TypeAdapter(tuple[list[ABLGameStatisticsSchema], ...]).validate_python(
+                games_players_statistics_response
+            )
+            match_abl_full_player_games(player_profile, games_info, games_players_info, games_players_statistics)
+            full_games_info += games_info
+        player_profile.player_number = player_profile.player_number_calculated
+        return ABLFullStatisticsSchema(player_profile=player_profile, seasons=parsed_seasons, games=full_games_info)

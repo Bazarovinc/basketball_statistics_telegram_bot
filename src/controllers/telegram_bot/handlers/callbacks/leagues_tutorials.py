@@ -6,7 +6,7 @@ from telegram import Update
 from telegram.ext import ContextTypes, ConversationHandler
 
 from src.constants import PARSE_MODE
-from src.containers.use_cases import UseCasesContainer
+from src.containers.app import UseCasesContainer
 from src.controllers.telegram_bot.utils import generate_tutorial_photos_group
 from src.controllers.telegram_bot.utils.get_callback_query import get_callback_query
 from src.domain.use_cases.core_use_cases.leagues_service import LeaguesService

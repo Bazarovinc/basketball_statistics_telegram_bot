@@ -1,7 +1,7 @@
 from pydantic import AnyHttpUrl, model_validator
 
-from common.domain.dto.league_reader_input import LeagueReaderInputSchema, LeagueTypeEnum
 from src.constants import MLBL_HOST, MLBL_PLAYER_PATH_PARAM, MLBL_TEAM_PATH_PARAM
+from src.core.domain.dto.league_reader_input import LeagueReaderInputSchema, LeagueTypeEnum
 
 
 class MLBLInputBaseSchema(LeagueReaderInputSchema):

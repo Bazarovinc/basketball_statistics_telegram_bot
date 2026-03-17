@@ -1,6 +1,6 @@
 from pydantic import AnyHttpUrl, Field, field_validator
 
-from common.domain.dto import BaseSchema
+from src.core.domain.dto import BaseSchema
 
 
 class MLBLTeamInfoResponseSchema(BaseSchema):

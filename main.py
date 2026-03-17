@@ -4,10 +4,10 @@ from loguru import logger
 from telegram import Update
 from telegram.ext import Application
 
-from src.containers.use_cases import UseCasesContainer
+from src.containers.app import UseCasesContainer
 from src.controllers.telegram_bot.utils import get_handlers
 from src.controllers.telegram_bot.utils.init_handlers import setup_commands
-from src.settings.app import app_settings
+from src.settings import app_settings
 
 # Инициализация FastAPI приложения
 app = FastAPI()

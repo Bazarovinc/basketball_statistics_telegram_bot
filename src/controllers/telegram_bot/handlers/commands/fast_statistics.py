@@ -5,7 +5,7 @@ from telegram.ext import ContextTypes
 
 from src.constants import FAST_STATISTICS_MESSAGE, PARSE_MODE, USER_COMMAND_CALL
 from src.constants.templates import FAST_STATISTICS_LEAGUE_BUTTON_TEMPLATE
-from src.containers.use_cases import UseCasesContainer
+from src.containers.app import UseCasesContainer
 from src.controllers.telegram_bot.states import START_ROUTES
 from src.controllers.telegram_bot.utils.generate_keyboards import generate_cancel_button, generate_leagues_keyboard
 from src.domain.use_cases.core_use_cases.leagues_service import LeaguesService

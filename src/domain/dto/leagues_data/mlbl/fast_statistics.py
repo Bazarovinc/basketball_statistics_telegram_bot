@@ -3,15 +3,15 @@ from typing import Self
 
 from pydantic import AliasPath, Field, field_validator, model_validator
 
-from common.domain.dto.league_reader_input import LeagueTypeEnum
-from common.domain.dto.statistics_presenter import (
+from src.constants import FIELDS_TO_ZERO, MAX_FAST_STATISTICS_GAMES_COUNT
+from src.constants.templates import GAME_INFO_TEMPLATE
+from src.core.domain import (
     PlayerShortInfoBaseSchema,
     PlayerStatisticsPresenterBaseSchema,
     StatisticsPresenterBaseSchema,
 )
-from common.utils.date_parser import parse_date_from_timestamp
-from src.constants import FIELDS_TO_ZERO, MAX_FAST_STATISTICS_GAMES_COUNT
-from src.constants.templates import GAME_INFO_TEMPLATE
+from src.core.domain.dto.league_reader_input import LeagueTypeEnum
+from src.utils.date_parser import parse_date_from_timestamp
 
 
 class MLBLGameStatisticSchema(StatisticsPresenterBaseSchema):

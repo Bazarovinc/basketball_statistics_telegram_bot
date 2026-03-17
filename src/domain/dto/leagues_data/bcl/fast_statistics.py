@@ -1,11 +1,11 @@
 from pydantic import Field, field_validator, model_validator
 
-from common.domain.dto.league_reader_input import LeagueTypeEnum
-from common.domain.dto.statistics_presenter import (
+from src.core.domain import (
     PlayerShortInfoBaseSchema,
     PlayerStatisticsPresenterBaseSchema,
     StatisticsPresenterBaseSchema,
 )
+from src.core.domain.dto.league_reader_input import LeagueTypeEnum
 
 
 class BCLGameStatisticSchema(StatisticsPresenterBaseSchema):
